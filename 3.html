@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>纹样介绍</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            height: 2000px;
+            overflow-x: hidden;
+            background-image: url('photo/3332.jpg?ver=1.0');
+            background-repeat: no-repeat;
+            background-size: 100% 1000vh;
+            background-position: top;
+        }
+
+
+        .shell {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+
+        }
+
+        header {
+            width: 100%;
+            height: 700px;
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0%, 100% 100%, 0 100%);
+            transition: clip-path 0.5s ease;
+            position: relative;
+        }
+
+        .img {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            background: url('photo/3_3.jpg?ver=1.0');
+            background-size: cover;
+            transform: scale(1);
+            transition: transform 0.5s ease;
+        }
+        .main {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            margin-top: 100px;
+        }
+
+
+        .main h2 {
+            font-size: 50px;
+            margin-bottom: 40px;
+        }
+
+        .main span {
+            padding: 0 100px;
+            font-size: 30px;
+        }
+
+
+
+        @import url('https://fonts.googleapis.com/css?family=Lato:700,900');
+
+        @font-face {
+            font-family: Arno Pro;
+            src: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/ArnoPro-Regular.otf);
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: Arno Pro;
+            src: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/ArnoPro-Italic.otf);
+            font-style: italic;
+        }
+
+        p {
+            font-family: Arno Pro, serif;
+            font-size: 1.4rem;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        p.credits {
+            font-style: italic;
+            text-indent: 0 !important;
+            margin: 1rem 0;
+        }
+
+        p a {
+            font-weight: bolder;
+            color: #000;
+            text-decoration: none;
+        }
+
+        @supports (font-variant-caps: small-caps) {
+            .multicol:first-of-type p:first-of-type {
+                font-variant-caps: small-caps;
+            }
+        }
+
+        p:not(:first-of-type) {
+            text-indent: 1.4rem;
+        }
+
+        .multicol {
+            column-count: 4;
+            column-gap: 2rem;
+            margin-top: 50px; 
+        }
+
+        .multicol+img {
+            margin: 2rem 0;
+        }
+
+        article {
+            width: 80%;
+            margin: 0 auto 4rem;
+        }
+
+        article img {
+            width: 100%;
+        }
+
+        article header {
+            margin-bottom: 2.5rem;
+            padding-bottom: 4rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.8);
+        }
+
+        article h1 {
+            margin-top: 0;
+            font-size: 2.5rem;
+        }
+
+        article h2 {
+            break-after: column;
+            font-size: 1.5rem;
+        }
+
+        h1,
+        h2 {
+            font-family: Lato, sans-serif;
+        }
+
+        @media all and (max-width: 1600px) {
+            .multicol {
+                column-count: 3;
+            }
+        }
+
+        @media all and (max-width: 1000px) {
+            .multicol {
+                column-count: 2;
+            }
+        }
+
+        @media all and (max-width:800px) {
+            article h2 {
+                break-after: avoid;
+            }
+
+            .multicol {
+                column-count: 1;
+            }
+        }
+
+        @media all and (max-width:600px) {
+            body {
+                margin: 0;
+            }
+
+            article {
+                width: 100%;
+            }
+
+            .multicol {
+                padding: 0 1rem;
+            }
+
+            article header {
+                margin-bottom: 2.5rem;
+                padding-bottom: 0;
+                border-bottom: none;
+            }
+
+            h1 {
+                margin-bottom: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="shell">
+        <header>
+            <div class="img"></div>
+        </header>
+        <div class="main">
+            <main>
+                <article>
+                    <div class="multicol">
+                        <h2>饕餮纹</h2>
+                        <p>
+                            它是二里冈文化期至西周早期盛行的主要纹饰，这一阶段常饰于器物的主要部位即腹、颈下，作为器物的主题花纹，在其衰落后，一般出现于器物的耳、足部。其图像或仅有首部、或在首部外还接有躯干与尾部。其各部分基本特征如下(如下图五):
+                        </p>
+                    </div>
+                    <img src="photo/3w1.png" alt="">
+                    <div class="multicol">
+                        <p>“饕餮”一名首见于《左传》文公十八年。文云：“缙云氏有不才子，贪于饮食，冒于货贿，侵欲崇侈，不可盈厌，聚敛积实，不知纪极，不分孤寡，不恤穷匮。天下之民以比三凶，谓之饕餮。”此所谓“三凶”是指《左传》同年文中所言帝鸿氏、少皞氏、颛顼氏的三位不才子。杜预注曰:“贪财为饕，贪食为餮。”但王引之《经义述闻》引王述之语曰:“贪财贪食总谓之饕餮。饕餮一声之转，不得分贪财为饕，贪食为餮也。……盖饕餮本贪食之名，故其字从食，因谓贪得无厌者为饕餮耳。”以上是以饕餮为贪得无厌之人的称谓。又《吕氏春秋·先识览》:“周鼎著饕餮，有首无身，食人未咽，害及其身，以言报更也。”所谓“报更”，犹言“报偿”，此是以饕餮为食人怪兽。同书《恃君览》又曰:"“……雁门之北，鹰隼所鸷须窥之国，饕餮、穷奇之地多无君，……少者使长，长者畏壮，有力者贤，暴傲者尊，日夜相残，无时休息，以尽其类。"是以饕餮为自相残杀的族类。
+                            由此可见，“饕餮”或为人称或为兽称。此二者中，有可能兽称为本意，用以称人是一种比喻。
+                        </p>
+                    </div>
+                    <img src="photo/3w2.png" alt="">
+                    <div class="multicol">
+                        <h2>蝉纹</h2>
+                        <p>
+                            蝉以其居高食露，有清洁淡雅之态，故自古即为人们所格外喜爱，殷代即有玉石及宝石所雕成的蝉（如殷墟妇好墓所出）作为饰品。周代与汉代皆有蝉形玉，以放在死者口内作随葬品，即所谓玉琀。青铜器纹饰中的蝉纹，皆具共同特征，两只大目，体躯作长三角形，上部作圆角，腹部有条纹。可分为有足与无足两种，流行于殷代，至西周早、中期。蝉纹可横置，组成带状饰于鼎或盘上及其他器物上作主纹饰。无足蝉纹亦多以垂叶三角纹为外框，蝉外围填以雷纹，附于饕餮纹下，构成纹饰带，多饰于鼎腹部。
+                        </p>
+                    </div>
+                    <img src="photo/3w3.png" alt="">
+                    <div class="multicol">
+                        <h2>涡纹</h2>
+                        <p>
+                            亦称火纹。《周礼·考工记》有“火以圜”之记载。火纹是太阳的标志，因此其特征是圆形的，中间略有突起，沿边有4到8道旋转的弧线，表示光焰的流动。在青铜器上最早的涡纹见于二里头文化期的斝腹部。从二里头文化期直至战国都可在器物上见到涡纹装饰。
+                            涡纹是指在器物上以圆形微凸的曲面上，沿边饰有数条(四至八条)作旋转状的弧线，中心有一圆圈，形成的纹饰。    
+                            此类纹饰共同特征是，在圆形微凸的曲面上，沿边饰有数条(四至八条)作旋转状的弧线，中心有一圆圈。旧通称涡纹，是因为其形近似水涡，中间小圆圈代表水流盘旋时隆起的中心，几条弧线代表围绕涡心旋转的水浪。
+
+                        </p>
+                    </div>
+                    <img src="photo/3w4.png" alt="">
+                </article>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        const header = document.querySelector('header');
+        const img = document.querySelector('.img');
+        let scrollDistance = 0;
+        let requestId = null;
+        function updateHeaderClipPath() {
+            const clipPathValue = `polygon(0 0, 100% 0%, 100% ${(scrollDistance <= 600) ? 100 - ((scrollDistance / 600) * 60) : 75}%, 0 100%)`;
+            header.style.clipPath = clipPathValue;
+            const scaleValue = 1 + ((scrollDistance / 600) * 1);
+            img.style.transform = `scale(${scaleValue})`;
+            const opacityValue = (scrollDistance / 600);
+        }
+        function scrollHandler(event) {
+            if (event.deltaY < 0) {
+                scrollDistance = Math.max(0, scrollDistance + event.deltaY);
+            } else {
+                scrollDistance = Math.min(600, scrollDistance + event.deltaY);
+            }
+            if (!requestId) {
+                requestId = window.requestAnimationFrame(() => {
+                    updateHeaderClipPath();
+                    requestId = null;
+                });
+            }
+        }
+        window.addEventListener('wheel', scrollHandler);
+    </script>
+</body>
+
+</html>

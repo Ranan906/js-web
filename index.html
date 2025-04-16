@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>铜影流年</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: url('photo/1bg.png') no-repeat center center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgb(243, 230, 241);
+            min-height: 100vh;
+        }
+
+        .hero-section {
+            background: url('photo/1_3hero.jpg') no-repeat center center;
+            background-size: cover;
+            height: 15vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: rgb(31, 50, 15);
+            font-size: 44px;
+            font-weight: bold;
+            font-family: 'Noto Serif SC', serif; /* 加上这个 */
+            letter-spacing: 8px;   /* 字与字之间增加2像素的间距 */
+        }
+
+
+        .shell {
+            width: 90%;
+            height: 600px;
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+        }
+
+        .box {
+            flex: 1;
+            overflow: hidden;
+            transition: 0.5s;
+            margin: 0 10px;
+            box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
+            border-radius: 20px;
+            border: 10px solid #fff;
+            background-color: #fff;
+            position: relative;
+        }
+
+        .box > img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+
+        .box > span {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 15%;
+            background: rgba(0, 0, 0, 0.4);
+            color: white;
+            font: 200 30px '优设标题黑', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .box:hover {
+            flex-basis: 40%;
+        }
+
+        .box:hover > img {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500&display=swap" rel="stylesheet">
+        铜影流年
+    </div>
+        
+    <audio autoplay>
+        <source src="music.mp3" type="audio/mpeg">
+        您的浏览器不支持音频元素。
+    </audio>
+
+    <div class="shell">
+        <div class="box">
+            <a href="1.html">
+                <img src="photo/p1.jpg">
+            </a>
+            <span>文物展示</span>
+        </div>
+            
+        
+        <div class="box">
+            <a href="2/index.html">
+                <img src="photo/历史时期.png">
+            </a>
+            <span>历史时期</span>
+        </div>
+            
+        <div class="box">
+            <a href="3.html">
+                <img src="photo/纹饰.jpg">
+            </a>
+            <span>纹样介绍</span>
+        </div>
+            
+        <div class="box">
+            <a href="4.html">
+                <img src="photo/合金_.png">
+            </a>
+            <span>合金配比</span>
+        </div>
+        <div class="box">
+            <a href="5us.html">
+                <img src="photo/p5.jpg">
+            </a>
+            <span>关于我们</span>
+        </div>
+    </div>
+</body>
+
+</html>
