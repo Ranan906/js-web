@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>自动播放背景音乐</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+
+<!-- 只在这里放音乐播放器 -->
+<audio id="bg-music" src="music.mp3" autoplay loop></audio>
+
+<!-- iframe加载内容 -->
+<iframe name="content-frame" src="index.html"></iframe>
+
+<script>
+// 自动给 iframe 加target，防止跳出iframe
+document.querySelector('iframe').addEventListener('load', function() {
+  const iframeDoc = this.contentDocument || this.contentWindow.document;
+  const links = iframeDoc.querySelectorAll('a');
+  links.forEach(link => {
+    link.setAttribute('target', 'content-frame');
+  });
+});
+</script>
+
+</body>
+</html>

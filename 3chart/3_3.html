@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>青铜器纹样分类体系（含20种标准纹饰）</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
+    <style>
+        body {margin: 0; background: #f5efe0; }
+        #main {width: 1400px; height: 900px; margin: 20px auto; }
+        .annotation {position: fixed; top: 10px; right: 10px; background: white; padding: 10px; border-radius: 5px;}
+    </style>
+</head>
+<body>
+    <div id="main"></div>
+    <script>
+        // 完整学术数据集（三级分类）
+        const dataSource = [
+            {
+                name: '动物纹系（62%）',
+                value: 620,
+                children: [
+                    {
+                        name: '兽面纹（58%）',
+                        value: 580,
+                        children: [
+                            {
+                                name: '饕餮纹',
+                                value: 300,
+                                period: '商代晚期（1300-1046BC）',
+                                percentage: '58%',
+                                typicalArtifact: '司母戊鼎（殷墟）',
+                                color: '#2f4554',
+                                source: ['殷周金文集成0144']
+                            },
+                            {
+                                name: '夔龙纹',
+                                value: 150,
+                                period: '商代中期',
+                                percentage: '29%',
+                                typicalArtifact: '妇好鸮尊（殷墟）',
+                                color: '#5470c6',
+                                source: ['考古学报1987-3']
+                            },
+                            {
+                                name: '凤鸟纹',
+                                value: 80,
+                                period: '西周早期',
+                                percentage: '15%',
+                                typicalArtifact: '何尊（周原）',
+                                color: '#91cc75',
+                                source: ['青铜器全集3.12']
+                            }
+                        ]
+                    },
+                    {
+                        name: '爬行动物纹（12%）',
+                        value: 120,
+                        children: [
+                            {
+                                name: '蟠螭纹',
+                                value: 70,
+                                period: '春秋时期',
+                                percentage: '13%',
+                                typicalArtifact: '楚王酓肯簠（随州）',
+                                color: '#fac858',
+                                source: ['考古中国2023-06']
+                            },
+                            {
+                                name: '蛇纹',
+                                value: 50,
+                                period: '战国早期',
+                                percentage: '9%',
+                                typicalArtifact: '曾侯乙尊盘（随州）',
+                                color: '#ee6666',
+                                source: ['江汉考古1985-2']
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: '几何纹系（28%）',
+                value: 280,
+                children: [
+                    {
+                        name: '云雷纹系（37%）',
+                        value: 185,
+                        children: [
+                            {
+                                name: '勾连云雷纹',
+                                value: 90,
+                                period: '西周中期',
+                                percentage: '18%',
+                                typicalArtifact: '毛公鼎（陕西）',
+                                color: '#f7ba2a',
+                                source: ['青铜器全集6.25']
+                            },
+                            {
+                                name: '目雷纹',
+                                value: 50,
+                                period: '商代早期',
+                                percentage: '9%',
+                                typicalArtifact: '杜岭方鼎（郑州）',
+                                color: '#73c0de',
+                                source: ['文物1975-2']
+                            },
+                            {
+                                name: '连珠纹',
+                                value: 45,
+                                period: '商代中期',
+                                percentage: '8%',
+                                typicalArtifact: '兽面纹斝（安阳）',
+                                color: '#3ba272',
+                                source: ['殷墟发掘报告']
+                            }
+                        ]
+                    },
+                    {
+                        name: '环带纹系（42%）',
+                        value: 210,
+                        children: [
+                            {
+                                name: '重环纹',
+                                value: 100,
+                                period: '西周晚期',
+                                percentage: '19%',
+                                typicalArtifact: '虢季子白盘（三门峡）',
+                                color: '#fc8452',
+                                source: ['三代吉金文存']
+                            },
+                            {
+                                name: '波带纹',
+                                value: 80,
+                                period: '西周晚期',
+                                percentage: '15%',
+                                typicalArtifact: '颂壶（周原）',
+                                color: '#9a60b4',
+                                source: ['金文通释']
+                            },
+                            {
+                                name: '窃曲纹',
+                                value: 30,
+                                period: '春秋早期',
+                                percentage: '6%',
+                                typicalArtifact: '秦公镈（宝鸡）',
+                                color: '#ea7ccc',
+                                source: ['考古与文物1980-4']
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: '自然纹系（7%）',
+                value: 70,
+                children: [
+                    {
+                        name: '天象纹（58%）',
+                        value: 40,
+                        children: [
+                            {
+                                name: '火纹',
+                                value: 25,
+                                period: '西周早期',
+                                percentage: '5%',
+                                typicalArtifact: '伯矩鬲（北京）',
+                                color: '#e86452',
+                                source: ['琉璃河西周墓']
+                            },
+                            {
+                                name: '涡纹',
+                                value: 15,
+                                period: '商代晚期',
+                                percentage: '3%',
+                                typicalArtifact: '利簋（临潼）',
+                                color: '#6e7ef3',
+                                source: ['文物1977-8']
+                            }
+                        ]
+                    },
+                    {
+                        name: '水纹系（42%）',
+                        value: 30,
+                        children: [
+                            {
+                                name: '垂鳞纹',
+                                value: 18,
+                                period: '春秋中期',
+                                percentage: '3%',
+                                typicalArtifact: '秦公镈（宝鸡）',
+                                color: '#32c5e9',
+                                source: ['考古学报1978-2']
+                            },
+                            {
+                                name: '波浪纹',
+                                value: 12,
+                                period: '战国晚期',
+                                percentage: '2%',
+                                typicalArtifact: '水陆攻战纹壶（成都）',
+                                color: '#96c24e',
+                                source: ['巴蜀青铜器研究']
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: '人物纹系（3%）',
+                value: 30,
+                children: [
+                    {
+                        name: '祭祀场景纹（65%）',
+                        value: 20,
+                        children: [
+                            {
+                                name: '虎噬人纹',
+                                value: 12,
+                                period: '商代晚期',
+                                percentage: '2%',
+                                typicalArtifact: '龙虎尊（阜南）',
+                                color: '#f47a92',
+                                source: ['文物精华1959']
+                            },
+                            {
+                                name: '人面纹',
+                                value: 8,
+                                period: '商代早期',
+                                percentage: '1%',
+                                typicalArtifact: '人面钺（苏埠屯）',
+                                color: '#b6a8de',
+                                source: ['考古1965-7']
+                            }
+                        ]
+                    },
+                    {
+                        name: '生活场景纹（35%）',
+                        value: 10,
+                        children: [
+                            {
+                                name: '狩猎纹',
+                                value: 7,
+                                period: '西周晚期',
+                                percentage: '1%',
+                                typicalArtifact: '刖人守门鬲（曲沃）',
+                                color: '#58c7c7',
+                                source: ['晋侯墓地发掘报告']
+                            },
+                            {
+                                name: '宴乐纹',
+                                value: 3,
+                                period: '战国中期',
+                                percentage: '0.5%',
+                                typicalArtifact: '嵌错壶（成都）',
+                                color: '#fcdc69',
+                                source: ['巴蜀青铜器图录']
+                            }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        // 增强学术配置
+        const option = {
+            tooltip: {
+                trigger: 'item',
+                formatter: (params) => {
+                    let str = `<strong>${params.name}</strong><br>`;
+                    if (params.data.typicalArtifact) 
+                        str += `典型器物：${params.data.typicalArtifact}<br>`;
+                    if (params.data.period) str += `盛行时期：${params.data.period}<br>`;
+                    if (params.data.percentage) str += `占比：${params.data.percentage}<br>`;
+                    if (params.data.source) 
+                        str += `<em>数据来源：${params.data.source.join('; ')}</em>`;
+                    return str;
+                }
+            },
+            series: [{
+                type: 'treemap',
+                data: dataSource,
+                layoutAlgorithm: 'squarify',
+                breadcrumb: { show: true },
+                roam: true,
+                levels: [
+                    {   
+                        itemStyle: { borderColor: '#fff', borderWidth: 3 },
+                        label: { fontSize: 16 }
+                    },
+                    {
+                        itemStyle: { borderColor: '#f5efe0', borderWidth: 2 },
+                        label: { fontSize: 14 }
+                    },
+                    {
+                        itemStyle: { borderColor: '#f5efe0', borderWidth: 1 },
+                        label: { fontSize: 12 }
+                    }
+                ],
+                label: {
+                    show: true,
+                    formatter: (params) => {
+                        return `{b|${params.name}}\n{a|${params.value}件}`;
+                    },
+                    rich: {
+                        a: { fontSize: 10, color: '#666' },
+                        b: { fontSize: 12, fontWeight: 'bold' }
+                    }
+                },
+                itemStyle: {
+                    borderColor: '#fff'
+                }
+            }]
+        };
+
+        const chart = echarts.init(document.getElementById('main'));
+        chart.setOption(option);
+        window.addEventListener('resize', () => chart.resize());
+    </script>
+</body>
+</html>

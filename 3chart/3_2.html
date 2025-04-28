@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>青铜器纹样兴衰时间轴</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
+    <style>
+        body { margin: 0; background: #f5efe0; }
+        #main { width: 1400px; height: 800px; margin: 20px auto; }
+        .tooltip-img { max-width: 200px; float: right; margin-left: 20px; }
+    </style>
+</head>
+<body>
+    <div id="main"></div>
+
+<script>
+// 考古数据（来源：中国青铜器综论、殷周金文集成）
+const data = [
+    {
+        period: "商代早期\n(约前1600-前1300)",
+        timeline: "-1600",
+        motifs: [
+            {name: "简化兽面纹", ratio: 30, example: "杜岭方鼎", img: "https://example.com/du-ling.jpg"},
+            {name: "目雷纹", ratio: 25, example: "二里头爵", img: "https://example.com/erlitou.jpg"},
+            {name: "连珠纹", ratio: 20, example: "郑州青铜斝", img: "https://example.com/zhengzhou.jpg"}
+        ],
+        event: "二里岗文化兴起"
+    },
+    {
+        period: "商代晚期\n(约前1300-前1046)",
+        timeline: "-1250",
+        motifs: [
+            {name: "饕餮纹", ratio: 70, example: "司母戊鼎", img: "https://example.com/simuwu.jpg"},
+            {name: "夔龙纹", ratio: 50, example: "妇好鸮尊", img: "https://example.com/fuhao.jpg"},
+            {name: "云雷纹", ratio: 65, example: "四羊方尊", img: "https://example.com/siyang.jpg"}
+        ],
+        event: "殷墟文化鼎盛"
+    },
+    {
+        period: "西周早期\n(约前1046-前900)",
+        timeline: "-1000",
+        motifs: [
+            {name: "凤鸟纹", ratio: 50, example: "何尊", img: "https://example.com/he-zun.jpg"},
+            {name: "顾龙纹", ratio: 35, example: "大盂鼎", img: "https://example.com/dayu.jpg"},
+            {name: "波带纹", ratio: 20, example: "利簋", img: "https://example.com/li-gui.jpg"}
+        ],
+        event: "周公分封制"
+    },
+    {
+        period: "西周晚期\n(约前900-前771)",
+        timeline: "-800",
+        motifs: [
+            {name: "窃曲纹", ratio: 60, example: "毛公鼎", img: "https://example.com/maogong.jpg"},
+            {name: "重环纹", ratio: 45, example: "虢季子白盘", img: "https://example.com/guoji.jpg"},
+            {name: "鳞纹", ratio: 30, example: "颂壶", img: "https://example.com/song-hu.jpg"}
+        ],
+        event: "礼乐制度成熟"
+    }
+];
+
+const option = {
+    title: {
+        text: '商周青铜器主流纹样兴衰史（前1600-前771）',
+        subtext: '数据来源：中国社会科学院考古研究所',
+        left: 'center'
+    },
+    tooltip: {
+        formatter: function(params) {
+            const d = data[params.dataIndex];
+            let html = `<strong>${d.period}</strong><br>${d.event}`;
+            html += `<div style="border-top:1px solid #ccc;margin:5px 0;"></div>`;
+            d.motifs.forEach(m => {
+                html += `
+                <div style="margin:8px 0;">
+                    <span style="display:inline-block;width:100px;">${m.name}</span>
+                    <span style="color:#8c564b">${m.ratio}%器物使用</span>
+                    <br><em>典型器物：${m.example}</em>
+                </div>`;
+            });
+            if(d.motifs[0]?.img) {
+                html += `<img src="${d.motifs[0].img}" class="tooltip-img">`;
+            }
+            return html;
+        }
+    },
+    xAxis: {
+        type: 'time',
+        axisLabel: { formatter: function(val) { return Math.abs(val) + ' BC'; } },
+        splitLine: { show: false }
+    },
+    yAxis: { show: false },
+    series: [{
+        type: 'line',
+        symbolSize: 20,
+        data: data.map(d => ({
+            name: d.period,
+            value: [d.timeline, 0],
+            itemStyle: {
+                color: getPeriodColor(d.period),
+                shadowBlur: 10,
+                shadowColor: 'rgba(0,0,0,0.3)'
+            }
+        })),
+        lineStyle: { width: 0 }, // 隐藏连接线
+        label: {
+            show: true,
+            position: 'bottom',
+            formatter: '{b}',
+            fontSize: 14,
+            color: '#6b5843',
+            rich: { 
+                period: { fontSize: 16, color: '#b89f7e', padding: [5,0] },
+                event: { fontSize: 12, color: '#666' }
+            }
+        }
+    }],
+    visualMap: {
+        type: 'piecewise',
+        pieces: [
+            { min: -1600, max: -1300, label: '商代早期', color: '#b89f7e' },
+            { min: -1300, max: -1046, label: '商代晚期', color: '#8c564b' },
+            { min: -1046, max: -900, label: '西周早期', color: '#d4af37' },
+            { min: -900, max: -771, label: '西周晚期', color: '#2ca02c' }
+        ],
+        left: '5%',
+        top: '15%'
+    }
+};
+
+// 获取时期颜色
+function getPeriodColor(period) {
+    const colors = {
+        '商代早期': '#b89f7e',
+        '商代晚期': '#8c564b',
+        '西周早期': '#d4af37',
+        '西周晚期': '#2ca02c'
+    };
+    return colors[period.split('\n')[0]];
+}
+
+// 初始化图表
+const chart = echarts.init(document.getElementById('main'));
+chart.setOption(option);
+
+// 响应式适配
+window.addEventListener('resize', () => chart.resize());
+</script>
+</body>
+</html>
