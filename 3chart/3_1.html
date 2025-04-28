@@ -4,6 +4,36 @@
     <meta charset="utf-8">
     <title>中国古代青铜器纹样桑基图</title>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
+    <style>
+        body { margin: 20px; background: #f5efe0; }
+        #main { width: 1400px; height: 800px; margin: 0 auto; }
+        .tooltip-img { max-width: 200px; float: right; margin-left: 20px; }
+                /* 可拖动图标样式 */
+        .draggable-icon {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            background: #cdaa7d;
+            border-radius: 50%;
+            cursor: move;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            z-index: 9999;
+            transition: transform 0.2s;
+        }
+
+        .draggable-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .draggable-icon::after {
+            content: "☰";
+            color: white;
+            font-size: 20px;
+        }
+    </style>
 </head>
 <body>
     <div id="main" style="width: 1200px;height:800px;"></div>
@@ -171,5 +201,72 @@
 
         myChart.setOption(option);
     </script>
+    <div class="draggable-icon" id="dragIcon"></div>
+    <script>
+        // 拖动功能实现
+        const draggableIcon = document.getElementById('dragIcon');
+        let isDragging = false;
+        let currentX = 0;
+        let currentY = 0;
+        let initialX = 0;
+        let initialY = 0;
+        let xOffset = 0;
+        let yOffset = 0;
+    
+        draggableIcon.addEventListener('mousedown', dragStart);
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', dragEnd);
+    
+        function dragStart(e) {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+            
+            if (e.target === draggableIcon) {
+                isDragging = true;
+            }
+        }
+    
+        function drag(e) {
+            if (isDragging) {
+                e.preventDefault();
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+                
+                xOffset = currentX;
+                yOffset = currentY;
+                
+                setTranslate(currentX, currentY, draggableIcon);
+            }
+        }
+    
+        function setTranslate(xPos, yPos, el) {
+            el.style.left = xPos + "px";
+            el.style.top = yPos + "px";
+        }
+    
+        function dragEnd(e) {
+            initialX = currentX;
+            initialY = currentY;
+            isDragging = false;
+        }
+        // 点击事件监听
+        draggableIcon.addEventListener('click', function(e) {
+            if (!isDragging) {
+                window.location.href = '../3chart/3index.html';
+            }
+        });
+    
+        // dragEnd函数
+        function dragEnd(e) {
+            initialX = currentX;
+            initialY = currentY;
+            isDragging = false; 
+        }
+    
+        // 初始化位置
+        draggableIcon.style.left = '20px';
+        draggableIcon.style.top = '20px';
+    </script>
+    
 </body>
 </html>

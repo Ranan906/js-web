@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>合金配比动态演化</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        .chart { margin: 20px; height: 600px; }
+    </style>
+</head>
+<body>
+    <div id="dynamicChart" class="chart"></div>
+
+    <script>
+        // 动态数据（公元前3000年-2020年）
+        const timelineData = {
+            year: [-3000, -500, 1540, 1856, 1909, 1970, 2020],
+            materials: ["青铜", "钢铁", "黄铜", "不锈钢", "铝合金", "镍基合金", "纳米合金"],
+            Cu:    [90,  70, 60,  50,  5,   3,   2],
+            Sn:    [10,  0,  0,   0,   0,   0,   0],
+            Fe:    [0,   98, 0,   80,  0,   10,  5],
+            C:     [0,   2,  0,   0.2, 0,   0,   0],
+            Al:    [0,   0,  0,   0,   95,  5,   10],
+            Ni:    [0,   0,  0,   0,   0,   70,  50]
+        };
+
+        // 动态轨迹配置
+        const traces = Object.keys(timelineData)
+            .filter(k => !['year', 'materials'].includes(k))
+            .map(element => ({
+                x: timelineData.year,
+                y: timelineData[element],
+                name: element,
+                mode: 'lines+markers',
+                line: { width: 2 },
+                hovertemplate: "%{y}% %{name}<extra></extra>"
+            }));
+
+        // 动画布局配置
+        const layout = {
+            title: '合金成分历史演变 (公元前3000年 - 2020年)',
+            xaxis: {
+                title: '年代',
+                range: [-3200, 2040],
+                tickvals: timelineData.year,
+                ticktext: timelineData.year.map(y => y < 0 ? `${-y} BCE` : y)
+            },
+            yaxis: { title: '元素含量 (%)', range: [0, 100] },
+            updatemenus: [{
+                type: "buttons",
+                direction: "left",
+                x: 0.1,
+                y: 1.2,
+                buttons: [{
+                    method: "animate",
+                    label: "播放",
+                    args: [null, {
+                        frame: { duration: 1000, redraw: true },
+                        transition: { duration: 800 },
+                        mode: "immediate"
+                    }]
+                }]
+            }],
+            sliders: [{
+                steps: timelineData.year.map((year, i) => ({
+                    args: [[i], {
+                        mode: "immediate",
+                        transition: { duration: 300 }
+                    }],
+                    label: year < 0 ? `${-year} BCE` : year,
+                    method: "animate"
+                })),
+                x: 0.1,
+                len: 0.9
+            }]
+        };
+
+        // 创建动态帧
+        const frames = timelineData.year.map((year, i) => ({
+            name: year,
+            data: traces.map(trace => ({
+                x: [timelineData.year[i]],
+                y: [trace.y[i]],
+                type: 'scatter'
+            })),
+            traces: [0, 1, 2, 3, 4, 5] // 所有轨迹索引
+        }));
+
+        // 渲染图表
+        Plotly.newPlot('dynamicChart', {
+            data: traces,
+            layout: layout,
+            frames: frames
+        }).then(() => {
+            // 添加时间标注
+            timelineData.materials.forEach((mat, i) => {
+                Plotly.relayout('dynamicChart', {
+                    [`annotations[${i}]`]: {
+                        x: timelineData.year[i],
+                        y: 105,
+                        text: mat,
+                        showarrow: false,
+                        font: { size: 12 }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

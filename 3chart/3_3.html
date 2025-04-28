@@ -2,16 +2,72 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>青铜器纹样分类体系（含20种标准纹饰）</title>
+    <title>青铜器纹样分类体系</title>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
     <style>
-        body {margin: 0; background: #f5efe0; }
-        #main {width: 1400px; height: 900px; margin: 20px auto; }
-        .annotation {position: fixed; top: 10px; right: 10px; background: white; padding: 10px; border-radius: 5px;}
+        body {margin: 0; background: #f5efe0;}
+        #main {width: 1400px; height: 900px; margin: 20px auto;}
+        .draggable-icon {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            background: #cdaa7d;
+            border-radius: 50%;
+            cursor: move;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            z-index: 9999;
+            transition: transform 0.2s;
+        }
+        .draggable-icon:hover {transform: scale(1.1);}
+        .draggable-icon::after {content: "☰"; color: white; font-size: 20px;}
+        
+        .legend {
+            position: fixed;
+            top: 60px;
+            right: 20px;
+            background: rgba(255,255,255,0.9);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 999;
+        }
+        .legend h4 {
+            margin: 0 0 12px 0;
+            color: #adcac3;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            font-size: 14px;
+            color: #34495e;
+        }
+        .color-block {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            margin-right: 10px;
+            border: 2px solid #6b5c43;
+            background-color: hsl(var(--hue), 55%, 45%);
+        }
     </style>
 </head>
 <body>
     <div id="main"></div>
+    <div class="draggable-icon" id="dragIcon"></div>
+    <div class="legend">
+        <h4>纹系颜色说明</h4>
+        <div class="legend-item" style="--hue: 85"><span class="color-block"></span>动物纹系</div>
+        <div class="legend-item" style="--hue: 30"><span class="color-block"></span>几何纹系</div>
+        <div class="legend-item" style="--hue: 10"><span class="color-block"></span>自然纹系</div>
+        <div class="legend-item" style="--hue: 210"><span class="color-block"></span>人物纹系</div>
+    </div>
     <script>
         // 完整学术数据集（三级分类）
         const dataSource = [
@@ -259,61 +315,96 @@
                 ]
             }
         ];
+        const hueMap = new Map([
+            ['动物纹系', 78],   // 青铜绿
+            ['几何纹系', 42],   // 赤铜色
+            ['自然纹系', 18],   // 陶土橙
+            ['人物纹系', 208]   // 靛蓝
+        ]);
 
-        // 增强学术配置
+        // —— 递归颜色处理 ——  
+        // 递归颜色处理
+        const processNodes = (data, level = 0, parentHue = 0) => data.map(node => {
+            const hue = level === 0 ? hueMap.get(node.name.split('（')[0].trim()) : parentHue;
+            const saturation = 60 - level * 10;
+            const lightness = 50 + level * 5;
+            
+            node.itemStyle = {
+                color: `hsl(${hue},${saturation}%,${lightness}%)`,
+                borderColor: '#8c7853',
+                borderWidth: 3 - level
+            };
+            
+            if (node.children) node.children = processNodes(node.children, level + 1, hue);
+            return node;
+        });
+
+        // 图表配置
         const option = {
             tooltip: {
                 trigger: 'item',
-                formatter: (params) => {
-                    let str = `<strong>${params.name}</strong><br>`;
-                    if (params.data.typicalArtifact) 
-                        str += `典型器物：${params.data.typicalArtifact}<br>`;
-                    if (params.data.period) str += `盛行时期：${params.data.period}<br>`;
-                    if (params.data.percentage) str += `占比：${params.data.percentage}<br>`;
-                    if (params.data.source) 
-                        str += `<em>数据来源：${params.data.source.join('; ')}</em>`;
-                    return str;
-                }
+                formatter: ({name, data}) => [
+                    `<strong>${name}</strong>`,
+                    data.typicalArtifact && `典型器物：${data.typicalArtifact}`,
+                    data.period && `盛行时期：${data.period}`,
+                    data.percentage && `占比：${data.percentage}`,
+                    data.source && `<em>数据来源：${data.source.join('; ')}</em>`
+                ].filter(Boolean).join('<br>')
             },
             series: [{
                 type: 'treemap',
-                data: dataSource,
+                data: processNodes(dataSource),
                 layoutAlgorithm: 'squarify',
-                breadcrumb: { show: true },
                 roam: true,
                 levels: [
-                    {   
-                        itemStyle: { borderColor: '#fff', borderWidth: 3 },
-                        label: { fontSize: 16 }
+                    {
+                        itemStyle: { borderWidth: 4, gapWidth: 10, borderColor: '#2c3e50' },
+                        label: { fontSize: 20, color: '#2c3e50', backgroundColor: 'rgba(255,255,255,0.7)', padding: [4,6] }
                     },
                     {
-                        itemStyle: { borderColor: '#f5efe0', borderWidth: 2 },
-                        label: { fontSize: 14 }
+                        itemStyle: { borderWidth: 5, gapWidth: 12, borderColor: '#95a5a6' },
+                        label: { fontSize: 14, color: '#34495e' }
                     },
                     {
-                        itemStyle: { borderColor: '#f5efe0', borderWidth: 1 },
-                        label: { fontSize: 12 }
+                        itemStyle: { borderWidth: 2, gapWidth: 6, borderColor: '#ecf0f1' },
+                        label: { fontSize: 12, color: '#7f8c8d', fontStyle: 'italic' }
                     }
                 ],
                 label: {
                     show: true,
-                    formatter: (params) => {
-                        return `{b|${params.name}}\n{a|${params.value}件}`;
-                    },
-                    rich: {
-                        a: { fontSize: 10, color: '#666' },
-                        b: { fontSize: 12, fontWeight: 'bold' }
-                    }
-                },
-                itemStyle: {
-                    borderColor: '#fff'
+                    formatter: ({name, value}) => `{b|${name}}\n{a|${value}件}`,
+                    rich: { a: { fontSize:10, color:'#666' }, b: { fontSize:12, fontWeight:'bold' } }
                 }
             }]
         };
 
+        // 初始化图表
         const chart = echarts.init(document.getElementById('main'));
         chart.setOption(option);
         window.addEventListener('resize', () => chart.resize());
+
+        // 拖动逻辑
+        let isDragging = false, currentX = 0, currentY = 0, initialX = 0, initialY = 0;
+        const draggableIcon = document.getElementById('dragIcon');
+        
+        draggableIcon.addEventListener('mousedown', e => {
+            initialX = e.clientX - currentX;
+            initialY = e.clientY - currentY;
+            isDragging = true;
+        });
+        
+        document.addEventListener('mousemove', e => {
+            if (!isDragging) return;
+            currentX = e.clientX - initialX;
+            currentY = e.clientY - initialY;
+            draggableIcon.style.left = `${currentX}px`;
+            draggableIcon.style.top = `${currentY}px`;
+        });
+        
+        document.addEventListener('mouseup', () => isDragging = false);
+        
+        draggableIcon.addEventListener('click', e => !isDragging && (window.location.href = '../3chart/3index.html'));
+        draggableIcon.style.cssText = 'left:20px; top:20px;'; // 初始化位置
     </script>
 </body>
 </html>
