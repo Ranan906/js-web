@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>铜锡合金相态动态模拟</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f0f0;
+            background-image: url("../../photo/4_bg.jpg");  
+            background-size: cover;                  
+            background-repeat: no-repeat;            
+            background-position: center;             
+            background-attachment: fixed;            
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.9);    
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            max-width: 800px;
+            width: 90%;
+        }
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+            text-align: center;
+        }
+        .slider-container {
+            width: 100%;
+            margin: 20px 0;
+        }
+        label {
+            font-size: 16px;
+            color: #34495e;
+            font-weight: 400;
+        }
+        input[type="range"] {
+            width: 100%;
+            margin-top: 8px;
+        }
+        #tempValue {
+            display: inline-block;
+            min-width: 60px;
+            text-align: right;
+            font-weight: 500;
+            color: #e74c3c;
+        }
+        #phase-legend {
+            display: flex;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-item div {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #333;
+        }
+        .legend-item text {
+            font-size: 14px;
+            color: #34495e;
+        }
+        #tooltip {
+            font-size: 14px;
+            font-weight: 500;
+            fill: #2c3e50;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+        }
+            /* 可拖动图标样式 */
+            .draggable-icon {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            background: #cdaa7d;
+            border-radius: 50%;
+            cursor: move;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            z-index: 9999;
+            transition: transform 0.2s;
+        }
+
+        .draggable-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .draggable-icon::after {
+            content: "←";
+            color: white;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>铜锡合金相态随温度变化</h2>
+        <div class="slider-container">
+            <label>温度 (°C): </label>
+            <input type="range" id="tempSlider" min="0" max="1200" value="800" step="10">
+            <span id="tempValue">800</span>
+        </div>
+        <div id="phaseDiagram"></div>
+        <div id="phase-legend"></div>
+    </div>
+
+    <script>
+        // 初始配置
+        const width = 600, height = 400;
+        const margin = { top: 30, right: 30, bottom: 50, left: 50 };
+
+        // 创建SVG画布
+        const svg = d3.select("#phaseDiagram")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        // 坐标轴比例尺
+        const xScale = d3.scaleLinear()
+            .domain([0, 100])
+            .range([margin.left, width - margin.right]);
+
+        const yScale = d3.scaleLinear()
+            .domain([0, 1200])
+            .range([height - margin.bottom, margin.top]);
+
+        // 动态数据生成函数
+        function generatePhaseData(temp) {
+            const data = [];
+            for(let sn = 0; sn <= 100; sn += 2) {
+                const phase = calculatePhase(sn, temp);
+                data.push({ sn, temp, phase });
+            }
+            return data;
+        }
+
+        // 相态计算逻辑（简化模型）
+        function calculatePhase(sn, temp) {
+            if(temp > 1000) return "Liquid";
+            if(sn < 15 && temp < 800) return "α-phase";
+            if(sn > 85 && temp < 600) return "β-phase";
+            if(temp < 400) return "Eutectoid";
+            return "Mixed";
+        }
+
+        // 颜色映射
+        const phaseColor = {
+            "Liquid": "#ff9999",
+            "α-phase": "#66b3ff",
+            "β-phase": "#99ff99",
+            "Eutectoid": "#ffcc00",
+            "Mixed": "#cccccc"
+        };
+
+        // 初始化绘图
+        drawDiagram(800);
+
+        // 滑块交互
+        d3.select("#tempSlider")
+            .on("input", function() {
+                const temp = +this.value;
+                d3.select("#tempValue").text(temp);
+                drawDiagram(temp);
+            });
+
+        // 动态绘制函数
+        function drawDiagram(temp) {
+            const data = generatePhaseData(temp);
+
+            // 更新热力条
+            const bars = svg.selectAll("rect")
+                .data(data, d => d.sn);
+
+            bars.enter()
+                .append("rect")
+                .merge(bars)
+                .attr("x", d => xScale(d.sn))
+                .attr("y", d => yScale(temp) - 10)
+                .attr("width", 8)
+                .attr("height", 20)
+                .attr("fill", d => phaseColor[d.phase])
+                .attr("stroke", "#333")
+                .on("mouseover", (e, d) => {
+                    d3.select(e.target).attr("stroke-width", 2);
+                    showTooltip(d);
+                })
+                .on("mouseout", (e) => {
+                    d3.select(e.target).attr("stroke-width", 0.5);
+                    hideTooltip();
+                });
+
+            bars.exit().remove();
+
+            // 绘制背景相图
+            if(!svg.select(".background").empty()) return;
+
+            // 静态相图背景（示例数据）
+            const phaseAreas = [
+                { type: "Liquid", points: [[0, 1000], [100, 1000], [100, 800], [0, 800]] },
+                { type: "α-phase", points: [[0, 800], [15, 800], [0, 400]] },
+                { type: "β-phase", points: [[85, 600], [100, 600], [100, 400], [85, 400]] }
+            ];
+
+            phaseAreas.forEach(area => {
+                svg.append("path")
+                    .datum(area.points)
+                    .attr("class", "background")
+                    .attr("d", d3.line()
+                        .x(d => xScale(d[0]))
+                        .y(d => yScale(d[1]))
+                    )
+                    .attr("fill", phaseColor[area.type])
+                    .attr("opacity", 0.2);
+            });
+        }
+
+        // 提示信息
+        function showTooltip(d) {
+            svg.append("text")
+                .attr("id", "tooltip")
+                .attr("x", xScale(d.sn) + 10)
+                .attr("y", yScale(d.temp) - 15)
+                .text(`${d.sn}% Sn - ${d.phase}`);
+        }
+
+        function hideTooltip() {
+            d3.select("#tooltip").remove();
+        }
+
+        // 创建图例
+        const legend = d3.select("#phase-legend")
+            .selectAll(".legend-item")
+            .data(Object.entries(phaseColor))
+            .enter()
+            .append("div")
+            .attr("class", "legend-item");
+
+        legend.append("div")
+            .style("width", "20px")
+            .style("height", "20px")
+            .style("background-color", d => d[1]);
+
+        legend.append("text")
+            .text(d => d[0]);
+    </script>
+    <div class="draggable-icon" id="dragIcon"></div>
+    <script>
+        // 拖动功能实现
+        const draggableIcon = document.getElementById('dragIcon');
+        let isDragging = false;
+        let currentX = 0;
+        let currentY = 0;
+        let initialX = 0;
+        let initialY = 0;
+        let xOffset = 0;
+        let yOffset = 0;
+
+        draggableIcon.addEventListener('mousedown', dragStart);
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', dragEnd);
+
+        function dragStart(e) {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+            
+            if (e.target === draggableIcon) {
+                isDragging = true;
+            }
+        }
+
+        function drag(e) {
+            if (isDragging) {
+                e.preventDefault();
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+                
+                xOffset = currentX;
+                yOffset = currentY;
+                
+                setTranslate(currentX, currentY, draggableIcon);
+            }
+        }
+
+        function setTranslate(xPos, yPos, el) {
+            el.style.left = xPos + "px";
+            el.style.top = yPos + "px";
+        }
+
+        function dragEnd(e) {
+            initialX = currentX;
+            initialY = currentY;
+            isDragging = false;
+        }
+        // 点击事件监听
+        draggableIcon.addEventListener('click', function(e) {
+            if (!isDragging) {
+                window.location.href = '4.html';
+            }
+        });
+
+        // dragEnd函数
+        function dragEnd(e) {
+            initialX = currentX;
+            initialY = currentY;
+            isDragging = false; 
+        }
+
+        // 初始化位置
+        draggableIcon.style.left = '20px';
+        draggableIcon.style.top = '20px';
+    </script>
+</body>
+</html>

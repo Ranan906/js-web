@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>青铜器文物展示</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            background: url('../photo/3bg.png') repeat center center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fffaff;
+        }
+
+        main {
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 自适应列数 */
+            padding: 50px;
+            width: 100%;
+            box-sizing: border-box;
+            overflow-y: hidden;
+        }
+    /* 可拖动图标样式 */
+        .draggable-icon {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            background: #cdaa7d;
+            border-radius: 50%;
+            cursor: move;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            z-index: 9999;
+            transition: transform 0.2s;
+        }
+
+        .draggable-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .draggable-icon::after {
+            content: "←";
+            color: white;
+            font-size: 20px;
+        }
+
+        section {
+            display: flex;
+            gap: 2rem;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* 保持原有的滚动效果 */
+        section:nth-child(1),
+        section:nth-child(3) {
+            animation: scroller linear;
+            animation-timeline: scroll(root);
+            flex-direction: column-reverse;
+            translate: 0% calc(-100% + 100vh);
+        }
+
+        .item {
+            position: relative; /* 使文本绝对定位相对于父元素 */
+            width: 100%;
+            height: 100%;
+        }
+
+        section img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            box-shadow: 0 0 10px #0002;
+            border-radius: 5px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative; /* 确保图片在容器内 */
+            z-index: 1; /* 确保图片位于文本容器之下 */
+        }
+
+        section img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(150, 50, 50, 0.5);
+        }
+
+        /* 设置文本容器 */
+        .caption {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5); /* 半透明背景 */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transform: translateX(-100%); /* 初始文本位置在左侧 */
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            padding: 20px;
+            box-sizing: border-box;
+            z-index: 2; /* 确保文本容器显示在图片上方 */
+        }
+
+        .caption {
+            font-family: Arial, sans-serif;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+            
+            .caption h3 {
+            margin: 0;
+            padding: 0;
+            margin-bottom: 10px; /* 一致的间隔 */
+        }
+            
+            .caption p {
+            margin: 0;
+            padding: 0;
+            margin-bottom: 10px; /* 一致的间隔 */
+        }
+            
+            .caption strong {
+            font-weight: bold;
+        }
+ 
+
+        .item:hover .caption {
+            opacity: 1; /* 显示文本 */
+            transform: translateX(0); /* 文本从左侧滑动至可见 */
+        }
+
+        @keyframes scroller {
+            to {
+                translate: 0% calc(100% - 100vh);
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <main>
+        <section>
+            <div class="item">
+                <img src="../photo/1ex/p1.png" />
+                <div class="caption">
+                    <h3>后母戊鼎（原司母戊鼎）</h3>
+                    <p>
+                        <strong>时期：</strong>商代晚期<br>
+                        <strong>出土地点：</strong>河南安阳武官村（1939年）<br>
+                        <strong>历史溯源：</strong>为商王武丁或祖甲祭祀母亲“戊”所铸，腹内壁铸铭文“后母戊”。其名称争议源于甲骨文中“司”“后”二字同形，2011年国家博物馆根据新研究改称“后母戊”，强调“王后”身份。<br>
+                        <strong>意义：</strong>重832公斤，世界最大青铜礼器，采用分铸法组合鼎耳与鼎身，体现商代鼎盛期青铜铸造技术。鼎身饕餮纹与云雷纹象征神权。<br>
+                        <strong>故事：</strong>抗战期间为防日军掠夺，村民将其重新埋入地下，直至1946年重见天日。现藏中国国家博物馆，为镇馆之宝。
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../photo/1ex/p2.png" />
+                <div class="caption">
+                    <h3>四羊方尊</h3>
+                    <p>
+                        <strong>时期：</strong>商代晚期<br>
+                        <strong>出土地点：</strong>湖南宁乡黄材镇（1938年）<br>
+                        <strong>历史溯源：</strong>推测为长江流域方国贵族祭祀用器，四角立体羊首与中部双角龙构成“四羊四龙”结构，腹饰凤鸟纹，体现商代南北文化交融。<br>
+                        <strong>意义：</strong>中国现存最大商代青铜方尊（高58.3厘米），首创分铸与合铸结合工艺，羊首中空设计避免冷却开裂。<br>
+                        <strong>故事：</strong>1938年出土后曾在长沙大轰炸中被震碎，1954年故宫博物院专家耗时一年修复，现展于中国国家博物馆。
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../photo/1ex/p3.png" />
+                <div class="caption">
+                    <h3>妇好鸮尊</h3>
+                    <p>
+                        <strong>时期：</strong>商代晚期<br>
+                        <strong>出土地点：</strong>河南安阳殷墟妇好墓（1976年）<br>
+                        <strong>历史溯源：</strong>商王武丁之妻妇好墓随葬品，鸮（猫头鹰）在商代被视为战神，两尊成对出土，器盖铸立鸟与夔龙。<br>
+                        <strong>意义：</strong>首件可确认墓主身份的商代青铜器，印证甲骨文记载的妇好军事成就。鸮尊造型写实，尾部垂地与双足形成三角支撑，力学设计精妙。<br>
+                        <strong>故事：</strong>墓中同出青铜器468件，包括象征军权的钺，证实妇好是中国最早女将。一尊藏河南博物院，另一尊在国家博物馆。
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../photo/1ex/p4.png" />
+                <div class="caption">
+                    <h3>三星堆青铜神树</h3>
+                    <p>
+                        <strong>时期：</strong>商代晚期<br>
+                        <strong>出土地点：</strong>四川广汉三星堆遗址二号坑（1986年）<br>
+                        <strong>历史溯源：</strong>古蜀国祭祀通天之器，树分三层九枝，枝头立鸟，树侧附龙，对应《山海经》“扶桑树”十日神话。<br>
+                        <strong>意义：</strong>现存最大青铜树（残高3.96米），采用榫卯分段铸造，体现与中原迥异的古蜀文明宇宙观。<br>
+                        <strong>故事：</strong>神树出土时碎成247块，修复耗时十年。其造型与中原青铜器差异巨大，佐证长江上游独立文明体系的存在。
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../photo/1ex/p5.png" />
+                <div class="caption">
+                    <h3>青铜纵目面具</h3>
+                    <p>
+                        <strong>时期：</strong>商代晚期<br>
+                        <strong>出土地点：</strong>四川广汉三星堆遗址二号坑（1986年）<br>
+                        <strong>历史溯源：</strong>古蜀国“人神中介”佩戴的祭祀面具，凸目、阔耳造型或代表蜀祖蚕丛“纵目”特征，额部方孔用于悬挂。<br>
+                        <strong>意义：</strong>三星堆文明图腾象征，最宽面具达138厘米，眼球采用分段铸造插入技术，体现超前工艺。<br>
+                        <strong>故事：</strong>面具出土时眼部残留黑色颜料与金箔，学者推测祭祀时可能装饰彩绘，强化神灵的视觉震慑力。
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../photo/1ex/p6.png" />
+                <div class="caption">
+                    <h3>龙虎纹青铜尊</h3>
+                    <p>
+                        <strong>时期：</strong>商代晚期<br>
+                        <strong>出土地点：</strong>安徽阜南月儿河（1957年）<br>
+                        <strong>历史溯源：</strong>商代淮河流域方国祭祀礼器，腹部浮雕虎噬人纹，虎口下方蹲坐一人，学界或解读为“人虎共生”的巫术象征，或反映献祭场景。<br>
+                        <strong>意义：</strong>纹饰层次分明，虎身云雷纹细密流畅，体现商代长江流域青铜铸造水平。尊口龙纹与虎纹呼应，彰显神秘威严。<br>
+                        <strong>故事：</strong>1957年农民捕鱼时意外发现，因器身纹饰过于骇人，一度被误认为“邪物”，后经郭沫若鉴定方确认其历史价值，现藏中国国家博物馆。
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../photo/1ex/p7.png" />
+                <div class="caption">
+                    <h3>毛公鼎</h3>
+                    <p>
+                        <strong>时期：</strong>西周晚期<br>
+                        <strong>出土地点：</strong>陕西岐山董家村（1843年）<br>
+                        <strong>历史溯源：</strong>周宣王册命重臣毛公的诏书铸鼎，内壁铭文497字，记载毛公勤王治国之功，文末镌“子子孙孙永宝用”。<br>
+                        <strong>意义：</strong>现存最长青铜器铭文，内容堪比《尚书》，字体方正端严，为西周金文典范。<br>
+                        <strong>故事：</strong>清末曾被陈介祺以千两白银购藏，抗战时期为避日军搜刮，藏于上海某银行地下金库，1948年运至台湾，现为台北故宫博物院镇馆之宝。
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../photo/1ex/p8.png" />
+                <div class="caption">
+                    <p>
+                        <strong>时期：</strong>西周早期<br>
+                        <strong>出土地点：</strong>陕西郿县礼村（1849年）<br>
+                        <strong>历史溯源：</strong>周康王赏赐贵族盂的礼器，铭文291字告诫盂以商亡为鉴，勤勉辅政，并记录赏赐奴隶1709人，反映西周奴隶制规模。<br>
+                        <strong>意义：</strong>与“大克鼎”“毛公鼎”并称“海内三宝”，铭文“丕显文王”等用语成为后世颂辞模板。<br>
+                        <strong>故事：</strong>1951年潘达于将家藏大盂鼎、大克鼎无偿捐献给国家，周恩来亲批嘉奖，现藏中国国家博物馆。
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../photo/1ex/p9.png" />
+                <div class="caption">
+                    <h3>何尊</h3>
+                    <p>
+                        <strong>时期：</strong>西周早期<br>
+                        <strong>出土地点：</strong>陕西宝鸡贾村塬（1963年）<br>
+                        <strong>历史溯源：</strong>周成王五年贵族“何”所铸祭器，铭文122字记载成王营建洛邑（今洛阳），并首提“宅兹中国”，此为“中国”一词最早文字记载。<br>
+                        <strong>意义：</strong>最早记载“中国”一词。证实西周“天下之中”政治理念，尊身饕餮纹与西周早期工艺过渡特征明显。<br>
+                        <strong>故事：</strong>出土时被村民以30元卖给废品站，幸得博物馆人员抢救，现藏宝鸡青铜器博物院。
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../photo/1ex/p10.png" />
+                <div class="caption">
+                    <h3>利簋</h3>
+                    <p>
+                        <strong>时期：</strong>西周早期<br>
+                        <strong>出土地点：</strong>陕西临潼零口镇（1976年）<br>
+                        <strong>历史溯源：</strong>周武王伐纣功臣“利”的祭器，铭文32字明确记载牧野之战发生于“甲子日朝”，并提及“岁鼎克闻”（木星当空天象），与《尚书》记载吻合。<br>
+                        <strong>意义：</strong>唯一直接记录武王伐纣时间的实物，将商周断代精确至公元前1046年1月20日。<br>
+                        <strong>故事：</strong>因铭文关键句释读争议，郭沫若、唐兰等学者曾展开激烈论战，现藏中国国家博物馆。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="item">
+                <img src="../photo/1ex/p11.png" />
+                <div class="caption">
+                    <h3>虢季子白盘</h3>
+                    <p>
+                        <strong>时期：</strong>西周晚期<br>
+                        <strong>出土地点：</strong>陕西宝鸡虢川司（1820年）<br>
+                        <strong>历史溯源：</strong>虢国贵族“子白”为纪念抗击猃狁之战功所铸，盘内铭文111字，以四言韵文书写，开创青铜器“诗体铭文”先河。<br>
+                        <strong>意义：</strong>形制似浴缸（长137厘米），为最大青铜盘，铭文“搏伐猃狁，于洛之阳”印证周王室与西北部族战争。<br>
+                        <strong>故事：</strong>太平天国时期被护王陈坤书作马槽使用，后由刘铭传发现并秘密保护，1950年刘氏后人捐给国家，现藏中国国家博物馆。
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../photo/1ex/p12.png" />
+                <div class="caption">
+                    <h3>大克鼎</h3>
+                    <p>
+                        <strong>时期：</strong>西周晚期<br>
+                        <strong>出土地点：</strong>陕西扶风任家村（1890年）<br>
+                        <strong>历史溯源：</strong>膳夫“克”为颂扬周王恩德所铸，铭文290字详述周王赐予克的土地、臣民与礼服，反映西周土地分封制度。<br>
+                        <strong>意义：</strong>鼎腹波曲纹开东周纹饰先河，铭文字体舒展，笔划首尾出锋，已见大篆向小篆演变端倪。<br>
+                        <strong>故事：</strong>1952年上海博物馆首任馆长徐森玉亲赴苏州，说服潘氏家族捐出鼎，现藏上海博物馆，与台北故宫毛公鼎、北京国家博物馆大盂鼎隔海相望。
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../photo/1ex/p13.png" />
+                <div class="caption">
+                    <h3>莲鹤方壶</h3>
+                    <p>
+                        <strong>时期：</strong>春秋时期<br>
+                        <strong>出土地点：</strong>河南新郑李家楼（1923年）<br>
+                        <strong>历史溯源：</strong>郑国国君墓陪葬品，壶顶立鹤展翅欲飞，双层莲瓣环绕，底部双兽吐舌承托，象征礼制崩坏下的思想解放。<br>
+                        <strong>意义：</strong>青铜时代尾声的艺术巅峰，写实动物与抽象纹饰结合，开启战国灵动风格。<br>
+                        <strong>故事：</strong>1949年国民党拟将其中一件运往台湾，因机场被炸滞留重庆，现分藏河南博物院与故宫博物院。
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../photo/1ex/p14.png" />
+                <div class="caption">
+                    <h3>越王勾践剑</h3>
+                    <p>
+                        <strong>时期：</strong>春秋晚期<br>
+                        <strong>出土地点：</strong>湖北江陵望山楚墓（1965年）<br>
+                        <strong>历史溯源：</strong>越王勾践自用佩剑，剑格镶嵌蓝琉璃与绿松石，剑身菱形暗格纹经硫化处理，铭文“越王鸠浅自作用剑”为鸟虫篆。<br>
+                        <strong>意义：</strong>2500年不锈之谜因含铬（0.4%-0.6%）破解，反映先秦金属镀层技术超乎认知。<br>
+                        <strong>故事：</strong>出土时考古队员手指不慎被划破血流不止，试纸检测锋利度可轻松划透20层纸。
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../photo/1ex/p15.png" />
+                <div class="caption">
+                    <h3>曾侯乙编钟</h3>
+                    <p>
+                        <strong>时期：</strong>战国早期<br>
+                        <strong>出土地点：</strong>湖北随州擂鼓墩（1978年）<br>
+                        <strong>历史溯源：</strong>曾国国君乙的礼乐重器，65件钟分三层八组悬挂，最大钟高152厘米，重203公斤，钟体镌刻音律铭文2800字。<br>
+                        <strong>意义：</strong>改写世界音乐史，十二律体系证实中国最早掌握七声音阶，钟腔“合瓦形”设计可实现一钟双音。<br>
+                        <strong>故事：</strong>1978年出土后，音乐家试奏《东方红》震惊世界，现藏湖北省博物馆，仍可演奏现代乐曲。
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../photo/1ex/p16.png" />
+                <div class="caption">
+                    <h3>吴王夫差矛</h3>
+                    <p>
+                        <strong>时期：</strong>春秋晚期<br>
+                        <strong>出土地点：</strong>湖北江陵马山（1983年）<br>
+                        <strong>历史溯源：</strong>吴王夫差自用兵器，矛身中脊血槽增强杀伤力，错金铭文“吴王夫差自作用鈼”清晰可辨。<br>
+                        <strong>意义：</strong>与越王勾践剑同出楚墓，佐证吴越兵器流入楚国，或为战争缴获品。<br>
+                        <strong>故事：</strong>出土时被误认为普通青铜器，清洗后铭文显现，现藏湖北省博物馆，与勾践剑展厅相邻，再现“吴越争霸”。
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../photo/1ex/p17.png" />
+                <div class="caption">
+                    <h3>王子午鼎</h3>
+                    <p>
+                        <strong>时期：</strong>春秋晚期<br>
+                        <strong>出土地点：</strong>河南淅川下寺楚墓（1978年）<br>
+                        <strong>历史溯源：</strong>楚庄王之子“午”所铸列鼎之一，鼎腹攀附六条夔龙，器壁内收形成优美曲线，铭文84字以鸟篆书写，记述王子午施政理念。<br>
+                        <strong>意义：</strong>楚国青铜器典范，繁复的失蜡法铸造工艺远超同期中原器物。<br>
+                        <strong>故事：</strong>1978年丹江口水库水位下降暴露墓葬，村民盗挖致部分鼎流失海外，经追讨七件回归，现藏河南博物院。
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../photo/1ex/p18.png" />
+                <div class="caption">
+                    <h3>青铜冰鉴（曾侯乙墓出土）</h3>
+                    <p>
+                        <strong>时期：</strong>战国早期<br>
+                        <strong>出土地点：</strong>湖北随州擂鼓墩（1978年）<br>
+                        <strong>历史溯源：</strong>曾侯乙夏日冰酒器具，由外鉴内缶构成双层结构，夹层置冰，缶内盛酒，四足兽口衔环便于搬运。<br>
+                        <strong>意义：</strong>世界最早冰箱原型，方鉴圆缶暗合“天圆地方”思想，八龙形耳饰展现精密铸造技术。<br>
+                        <strong>故事：</strong>出土时内缶仍存果酒残迹，现藏湖北省博物馆，2010年上海世博会曾复刻展出。
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../photo/1ex/p19.png" />
+                <div class="caption">
+                    <h3>铜奔马（马踏飞燕）</h3>
+                    <p>
+                        <strong>时期：</strong>东汉<br>
+                        <strong>出土地点：</strong>甘肃武威雷台汉墓（1969年）<br>
+                        <strong>历史溯源：</strong>张掖太守张某军仪仗队陪葬品，奔马三足腾空，右后蹄踏飞鸟，鸟身羽纹清晰，呈惊愕回首状。<br>
+                        <strong>意义：</strong>力学与艺术的完美平衡，1983年被定为中国旅游标志，象征中华文化腾飞。<br>
+                        <strong>故事：</strong>郭沫若定名“马踏飞燕”，但学界对“飞鸟”身份有鹰、燕、龙雀之争，现藏甘肃省博物馆。
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../photo/1ex/p20.png" />
+                <div class="caption">
+                    <h3>秦始皇陵铜车马</h3>
+                    <p>
+                        <strong>时期：</strong>秦代<br>
+                        <strong>出土地点：</strong>陕西临潼秦始皇陵西侧（1980年）<br>
+                        <strong>历史溯源：</strong>秦始皇銮驾陪葬品，按真车马1/2比例铸造，二号车配备弩机、盾牌，车窗可开合，缰绳金银相间。<br>
+                        <strong>意义：</strong>世界最复杂青铜器，3462个部件采用铸造、焊接、镶嵌等工艺，伞盖最薄处仅1毫米。<br>
+                        <strong>故事：</strong>出土时碎成1555片，修复耗时8年，现藏秦始皇帝陵博物院。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="item">
+                <img src="../photo/1ex/p21.png" />
+                <div class="caption">
+                    <h3>错金银云纹青铜犀尊</h3>
+                    <p>
+                        <strong>时期：</strong>西汉<br>
+                        <strong>出土地点：</strong>陕西兴平豆马村（1963年）<br>
+                        <strong>历史溯源：</strong>汉武帝时期皇家铸器，犀牛皮肤褶皱以错金银工艺表现，背部活盖可注酒，口部流孔倒酒。<br>
+                        <strong>意义：</strong>写实动物造型反映西汉审美转向，体内中空设计突破传统礼器范式。<br>
+                        <strong>故事：</strong>犀牛原型为亚洲苏门答腊犀，证实汉代与东南亚物种交流，现藏中国国家博物馆。
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../photo/1ex/p22.png" />
+                <div class="caption">
+                    <h3>长信宫灯</h3>
+                    <p>
+                        <strong>时期：</strong>西汉<br>
+                        <strong>出土地点：</strong>河北满城窦绾墓（1968年）<br>
+                        <strong>历史溯源：</strong>原属阳信夷侯刘揭，后归窦太后，灯体宫女右臂为烟道，袖口下垂作灯罩，可调节光线方向。<br>
+                        <strong>意义：</strong>世界最早环保灯具，利用虹吸原理收纳烟尘，鎏金工艺历经千年仍熠熠生辉。<br>
+                        <strong>故事：</strong>宫女面部愁容被解读为“深宫哀怨”，实为专注持灯神态，现藏河北博物院。
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../photo/1ex/p23.png" />
+                <div class="caption">
+                    <h3>皿方罍</h3>
+                    <p>
+                        <strong>时期：</strong>商代晚期<br>
+                        <strong>出土地点：</strong>湖南桃源（1919年）<br>
+                        <strong>历史溯源：</strong>器盖铭文“皿作父己尊彝”，器身饕餮纹间饰夔龙，扉棱高耸，属“方罍之王”。<br>
+                        <strong>意义：</strong>体现商代南方青铜器雄浑风格，1924年器身流失海外，2014年国家文物局促成器盖与器身合璧。<br>
+                        <strong>故事：</strong>纽约佳士得拍卖前夕，湖南收藏家群体集资2000万美元购回器身，现藏湖南省博物馆。
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../photo/1ex/p24.png" />
+                <div class="caption">
+                    <h3>中山王厝铜壶</h3>
+                    <p>
+                        <strong>时期：</strong>战国<br>
+                        <strong>出土地点：</strong>河北平山三汲村（1977年）<br>
+                        <strong>历史溯源：</strong>中山国第五代王厝的盛酒器，铭文450字详述伐燕功绩与治国思想，壶身嵌红铜兽纹。<br>
+                        <strong>意义：</strong>填补史书对“千乘之国”中山国的记载空白，铭文提及“皇祖文武”反映鲜虞族华夏化进程。<br>
+                        <strong>故事：</strong>出土时壶内存2300年前古酒，开盖时酒香扑鼻，现藏河北博物院。
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../photo/1ex/p25.png" />
+                <div class="caption">
+                    <h3>鄂君启节</h3>
+                    <p>
+                        <strong>时期：</strong>战国<br>
+                        <strong>出土地点：</strong>安徽寿县邱家花园（1957年）<br>
+                        <strong>历史溯源：</strong>楚怀王颁发给鄂君启的免税通行证，五件铜节（车节3、舟节2）错金铭文规定商队车船数量、路线及禁运物资。<br>
+                        <strong>意义：</strong>研究战国关税制度、交通地理的一手资料，铭文提及“庚爰陵”“逾江”等34处地名。<br>
+                        <strong>故事：</strong>1957年治淮工程中发现，农民误认为“废铜”险被熔毁，现藏中国国家博物馆。
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../photo/1ex/p26.png" />
+                <div class="caption">
+                    <h3>晋侯稣钟</h3>
+                    <p>
+                        <strong>时期：</strong>西周<br>
+                        <strong>出土地点：</strong>陕西曲沃北赵村晋侯墓地（1992年）<br>
+                        <strong>历史溯源：</strong>晋献侯稣随葬编钟，16件钟体刻凿铭文355字，记载周厉王三十三年晋侯率部征讨夙夷之战。<br>
+                        <strong>意义：</strong>首现西周利器刻铭实例，推翻“青铜器铭文皆铸成”的传统认知。<br>
+                        <strong>故事：</strong>14件出土于考古发掘，2件流散香港后被上海博物馆购回，现分藏上博与山西博物院。
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../photo/1ex/p27.jpg" />
+                <div class="caption">
+                    <h3>墙盘</h3>
+                    <p>
+                        <strong>时期：</strong>西周<br>
+                        <strong>出土地点：</strong>陕西扶风庄白村（1976年）<br>
+                        <strong>历史溯源：</strong>史墙为纪念先祖功绩所铸，盘内铭文284字，前半颂扬文王至恭王七代周王，后半记述微氏家族辅佐周室历程。<br>
+                        <strong>意义：</strong>西周中期金文典范，字体工整如矩，内容与《史记》互补，证实微子后裔在周朝任职。<br>
+                        <strong>故事：</strong>出土于西周青铜器窖藏，同坑103件器物皆微氏家族礼器，现藏宝鸡青铜器博物院。
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../photo/1ex/p28.png" />
+                <div class="caption">
+                    <h3>青铜大面具（三星堆）</h3>
+                    <p>
+                        <strong>时期：</strong>商代晚期<br>
+                        <strong>出土地点：</strong>四川广汉三星堆遗址（2021年）<br>
+                        <strong>历史溯源：</strong>三星堆八号祭祀坑新出土最大青铜面具，宽131厘米，额间夔龙纹饰，耳部穿孔或用于悬挂。<br>
+                        <strong>意义：</strong>古蜀“纵目神”崇拜的极致表现，铸造需超200公斤铜液一次成型，体现三星堆青铜技术成熟度。<br>
+                        <strong>故事：</strong>出土时与黄金权杖、玉琮同坑，或为祭祀最高神祇的象征，现藏三星堆博物馆新馆。
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../photo/1ex/p29.png" />
+                <div class="caption">
+                    <h3>散氏盘</h3>
+                    <p>
+                        <strong>时期：</strong>西周晚期<br>
+                        <strong>出土地点：</strong>陕西凤翔（清乾隆年间）<br>
+                        <strong>历史溯源：</strong>矢国赔付散国土地的契约凭证，铭文357字详述田界四至及盟誓过程，见证西周晚期土地纠纷。<br>
+                        <strong>意义：</strong>金文书法“草篆”鼻祖，笔划浑厚欹侧，郭沫若赞其“抵得一篇《尚书》”。<br>
+                        <strong>故事：</strong>乾隆皇帝误认伪铭将其冷置，后经阮元考证翻身成重器，现藏台北故宫博物院。
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../photo/1ex/p30.png" />
+                <div class="caption">
+                    <h3>陈侯方壶</h3>
+                    <p>
+                        <strong>时期：</strong>春秋<br>
+                        <strong>出土地点：</strong>河南新郑李家楼（1923年）<br>
+                        <strong>历史溯源：</strong>陈国国君为女陪嫁所铸媵器，壶颈双龙耳衔环，腹部蟠螭纹细如发丝，盖顶莲瓣装饰开东周新风。<br>
+                        <strong>意义：</strong>反映春秋诸侯联姻政治，失蜡法铸造的龙耳玲珑剔透，突破传统范铸法局限。。<br>
+                        <strong>故事：</strong>1923年河南饥荒，村民盗掘郑公大墓得数百件青铜器，引发军阀争夺，现藏台北故宫博物院。
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+    <div class="draggable-icon" id="dragIcon"></div>
+    <script>
+        // 拖动功能实现
+        const draggableIcon = document.getElementById('dragIcon');
+        let isDragging = false;
+        let currentX = 0;
+        let currentY = 0;
+        let initialX = 0;
+        let initialY = 0;
+        let xOffset = 0;
+        let yOffset = 0;
+
+        draggableIcon.addEventListener('mousedown', dragStart);
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', dragEnd);
+
+        function dragStart(e) {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+            
+            if (e.target === draggableIcon) {
+                isDragging = true;
+            }
+        }
+
+        function drag(e) {
+            if (isDragging) {
+                e.preventDefault();
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+                
+                xOffset = currentX;
+                yOffset = currentY;
+                
+                setTranslate(currentX, currentY, draggableIcon);
+            }
+        }
+
+        function setTranslate(xPos, yPos, el) {
+            el.style.left = xPos + "px";
+            el.style.top = yPos + "px";
+        }
+
+        function dragEnd(e) {
+            initialX = currentX;
+            initialY = currentY;
+            isDragging = false;
+        }
+        // 点击事件监听
+        draggableIcon.addEventListener('click', function(e) {
+            if (!isDragging) {
+                window.location.href = '../index.html';
+            }
+        });
+
+        // dragEnd函数
+        function dragEnd(e) {
+            initialX = currentX;
+            initialY = currentY;
+            isDragging = false; 
+        }
+
+        // 初始化位置
+        draggableIcon.style.left = '20px';
+        draggableIcon.style.top = '20px';
+    </script>
+</body>
+
+</html>

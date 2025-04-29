@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>中国古代青铜器纹样桑基图</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
+    <style>
+        body { margin: 20px; background: #f5efe0; }
+        #main { width: 1400px; height: 800px; margin: 0 auto; }
+        .tooltip-img { max-width: 200px; float: right; margin-left: 20px; }
+                /* 可拖动图标样式 */
+        .draggable-icon {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            background: #cdaa7d;
+            border-radius: 50%;
+            cursor: move;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            z-index: 9999;
+            transition: transform 0.2s;
+        }
+
+        .draggable-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .draggable-icon::after {
+            content: "←";
+            color: white;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="main" style="width: 1200px;height:800px;"></div>
+    
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 纹饰详细信息映射
+        const 纹饰详情 = {
+             // 层级1：时期节点
+            '商代早期': { 描述: '青铜器铸造初期，纹饰以几何纹为主，器形质朴', 代表技术: '块范铸造法雏形', 典型遗址: '郑州二里岗遗址' },
+            '商代晚期': { 描述: '纹饰繁缛神秘，动物纹主导，体现神权政治', 代表技术: '复合范铸造', 典型遗址: '安阳殷墟' },
+            '西周早期': { 描述: '继承商制但纹饰趋于规整，礼器功能强化', 代表技术: '分铸法普及', 典型遗址: '周原遗址' },
+            '西周晚期': { 描述: '纹饰抽象化，铭文地位上升', 代表技术: '失蜡法出现', 典型遗址: '三门峡虢国墓地' },
+            '其他时期': { 描述: '春秋战国区域特色纹饰的发端', 代表技术: '错金银工艺兴起', 典型遗址: '湖北随州曾侯乙墓' },
+
+            // 层级2：纹样类型
+            '动物纹': { 特征: '以神话动物为主体，具宗教象征意义', 常见工艺: '浮雕/圆雕/阴刻', 代表时期: '商代晚期' },
+            '几何纹': { 特征: '抽象线条与图形，体现秩序美感', 常见工艺: '模印/线刻', 代表时期: '西周中晚期' },
+            '自然纹': { 特征: '表现水火天体等自然元素', 常见工艺: '凸铸/螺旋铸造', 代表时期: '商周交替期' },
+            '人物纹': { 特征: '描绘人类活动与神灵形象', 常见工艺: '高浮雕/线刻', 代表时期: '西周晚期至春秋' },
+            '饕餮纹': { 内涵: '象征神权与王权，沟通天地神灵', 工艺: '高浮雕铸造', 器物: '司母戊鼎（商晚）' },
+            '夔龙纹': { 内涵: '龙神崇拜，象征王权神授', 工艺: '浅浮雕+阴刻', 器物: '妇好鸮尊（商晚）' },
+            '凤鸟纹': { 内涵: '周人祥瑞，天命所归', 工艺: '透雕+分铸法', 器物: '何尊（西周早）' },
+            '云雷纹': { 内涵: '天地气象的抽象表达', 工艺: '连续模印技术', 器物: '四羊方尊（商晚）' },
+            '窃曲纹': { 内涵: '礼制变革的抽象符号', 工艺: '失蜡法铸造', 器物: '毛公鼎（西周晚）' },
+            '重环纹': { 内涵: '等级秩序的几何化表现', 工艺: '模范拼接工艺', 器物: '虢季子白盘（西周晚）' },
+            '波带纹': { 内涵: '水波流动的韵律美感', 工艺: '阴刻线描技法', 器物: '颂壶（西周晚）' },
+            '虎噬人纹': { 内涵: '人虎共生的巫术场景', 工艺: '圆雕+浮雕结合', 器物: '龙虎尊（商晚）' },
+            '火纹': { 内涵: '火神崇拜的祭祀符号', 工艺: '同心圆凸铸', 器物: '伯矩鬲（西周早）' },
+            '蝉纹': { 内涵: '生命轮回的象征', 工艺: '浅浮雕+镶嵌', 器物: '亚醜蝉纹觚（商中）' },
+            '目雷纹': { 内涵: '雷电崇拜的抽象化', 工艺: '连续范印技术', 器物: '杜岭方鼎（商早）' },
+            '连珠纹': { 内涵: '星辰宇宙的几何表现', 工艺: '点状凸起铸造', 器物: '兽面纹斝（商早）' },
+            '顾龙纹': { 内涵: '回首龙形的祥瑞寓意', 工艺: '分段铸造焊接', 器物: '大盂鼎（西周早）' },
+            '鳞纹': { 内涵: '鱼龙变化的象征', 工艺: '片状叠压技法', 器物: '散氏盘（西周晚）' },
+            '蟠螭纹': { 内涵: '楚地巫文化的龙蛇崇拜', 工艺: '失蜡法精铸', 器物: '楚王酓肯簠（春秋）' },
+            '狩猎纹': { 内涵: '贵族军事田猎的纪实', 工艺: '线刻叙事构图', 器物: '刖人守门鬲（西周晚）' },
+            '垂鳞纹': { 内涵: '秦地特色的秩序美感', 工艺: '叠压鱼鳞铸造', 器物: '秦公镈（春秋）' },
+            '涡纹': { 内涵: '水流漩涡的宇宙观表达', 工艺: '螺旋凹槽铸造', 器物: '利簋（西周早）' },
+            '人面纹': { 内涵: '祖先崇拜的神灵化', 工艺: '高浮雕人面', 器物: '人面钺（商早）' },
+            '象纹': { 内涵: '南方象群的图腾化', 工艺: '立体圆雕技法', 器物: '象尊（商晚）' }
+        };
+
+        var option = {
+            title: { text: '中国古代青铜器纹样演变桑基图', subtext: '数据来源：考古文献与博物馆资料', left: 'center' },
+            tooltip: {
+                trigger: 'item',
+                alwaysShowContent: true,  // 关键修复：强制显示tooltip
+                formatter: function(params) {
+                const 当前节点 = params.name;
+                const 信息 = 纹饰详情[当前节点] || {};
+
+                // 修复后的层级判断逻辑
+                if (['商代早期', '商代晚期', '西周早期', '西周晚期', '其他时期'].includes(当前节点)) {
+                    return `<div class="tooltip">
+                        <h3>${当前节点}</h3>
+                        <p><strong>时期特点：</strong> ${信息.描述 || '待补充'}</p>
+                        <p><strong>铸造技术：</strong> ${信息.代表技术 || '待补充'}</p>
+                        <p><strong>典型遗址：</strong> ${信息.典型遗址 || '待补充'}</p>
+                    </div>`;
+                } else if (['动物纹','几何纹','自然纹','人物纹'].includes(当前节点)) {
+                    return `<div class="tooltip">
+                        <h3>${当前节点}</h3>
+                        <p><strong>艺术特征：</strong> ${信息.特征 || '待补充'}</p>
+                        <p><strong>主要工艺：</strong> ${信息.常见工艺 || '待补充'}</p>
+                        <p><strong>盛行时期：</strong> ${信息.代表时期 || '待补充'}</p>
+                    </div>`;
+                } else {
+                    return `<div class="tooltip">
+                        <h3>${当前节点}</h3>
+                        <p><strong>文化内涵：</strong> ${信息.内涵 || '待补充'}</p>
+                        <p><strong>工艺技法：</strong> ${信息.工艺 || '待补充'}</p>
+                        <p><strong>代表器物：</strong> ${信息.器物 || '待补充'}</p>
+                    </div>`;
+                }
+            }
+        },
+            series: [{
+                type: 'sankey',
+                data: [
+                    // 时期节点 (层级1)
+                    {name: '商代早期'},
+                    {name: '商代晚期'},
+                    {name: '西周早期'},
+                    {name: '西周晚期'},
+                    {name: '其他时期'},
+                    
+                    // 纹样类型 (层级2)
+                    {name: '动物纹', itemStyle: {color: '#8c564b'}},
+                    {name: '几何纹', itemStyle: {color: '#17becf'}},
+                    {name: '自然纹', itemStyle: {color: '#2ca02c'}},
+                    {name: '人物纹', itemStyle: {color: '#d62728'}},
+                    
+                    // 具体纹样 (层级3) - 完整20种
+                    {name: '饕餮纹', itemStyle: {color: '#bcbd22'}},
+                    {name: '夔龙纹', itemStyle: {color: '#9467bd'}},
+                    {name: '凤鸟纹', itemStyle: {color: '#e377c2'}},
+                    {name: '云雷纹', itemStyle: {color: '#7f7f7f'}},
+                    {name: '窃曲纹', itemStyle: {color: '#ff9896'}},
+                    {name: '重环纹', itemStyle: {color: '#98df8a'}},
+                    {name: '波带纹', itemStyle: {color: '#aec7e8'}},
+                    {name: '虎噬人纹', itemStyle: {color: '#1f77b4'}},
+                    {name: '火纹', itemStyle: {color: '#ff7f0e'}},
+                    {name: '蝉纹', itemStyle: {color: '#2ca02c'}},
+                    {name: '目雷纹', itemStyle: {color: '#d62728'}},
+                    {name: '连珠纹', itemStyle: {color: '#8c564b'}},
+                    {name: '顾龙纹', itemStyle: {color: '#17becf'}},
+                    {name: '鳞纹', itemStyle: {color: '#ff9896'}},
+                    {name: '蟠螭纹', itemStyle: {color: '#98df8a'}},
+                    {name: '狩猎纹', itemStyle: {color: '#9467bd'}},
+                    {name: '垂鳞纹', itemStyle: {color: '#bcbd22'}},
+                    {name: '涡纹', itemStyle: {color: '#e377c2'}},
+                    {name: '人面纹', itemStyle: {color: '#7f7f7f'}},
+                    {name: '象纹', itemStyle: {color: '#1f77b4'}}
+                ],
+                links: [
+                    // 时期 -> 纹样类型
+                    {source: '商代早期', target: '动物纹', value: 8, tooltip: { show: false}},
+                    {source: '商代早期', target: '几何纹', value: 3, tooltip: { show: false}},
+                    {source: '商代晚期', target: '动物纹', value: 12, tooltip: { show: false}},
+                    {source: '商代晚期', target: '自然纹', value: 6, tooltip: { show: false}},
+                    {source: '西周早期', target: '动物纹', value: 7, tooltip: { show: false}},
+                    {source: '西周早期', target: '几何纹', value: 9, tooltip: { show: false}},
+                    {source: '西周晚期', target: '几何纹', value: 11, tooltip: { show: false}},
+                    {source: '西周晚期', target: '人物纹', value: 5, tooltip: { show: false}},
+                    {source: '其他时期', target: '人物纹', value: 4, tooltip: { show: false}},
+                    
+                    // 纹样类型 -> 具体纹样
+                    {source: '动物纹', target: '饕餮纹', value: 15, tooltip: { show: false}},
+                    {source: '动物纹', target: '夔龙纹', value: 10, tooltip: { show: false}},
+                    {source: '动物纹', target: '凤鸟纹', value: 8, tooltip: { show: false}},
+                    {source: '动物纹', target: '蝉纹', value: 6, tooltip: { show: false}},
+                    {source: '动物纹', target: '顾龙纹', value: 5, tooltip: { show: false}},
+                    {source: '动物纹', target: '象纹', value: 4, tooltip: { show: false}},
+                    
+                    {source: '几何纹', target: '云雷纹', value: 12, tooltip: { show: false}},
+                    {source: '几何纹', target: '窃曲纹', value: 9, tooltip: { show: false}},
+                    {source: '几何纹', target: '重环纹', value: 7, tooltip: { show: false}},
+                    {source: '几何纹', target: '波带纹', value: 6, tooltip: { show: false}},
+                    {source: '几何纹', target: '目雷纹', value: 5, tooltip: { show: false}},
+                    {source: '几何纹', target: '连珠纹', value: 4, tooltip: { show: false}},
+                    
+                    {source: '自然纹', target: '火纹', value: 6, tooltip: { show: false}},
+                    {source: '自然纹', target: '涡纹', value: 5, tooltip: { show: false}},
+                    {source: '自然纹', target: '鳞纹', value: 4, tooltip: { show: false}},
+                    {source: '自然纹', target: '垂鳞纹', value: 3, tooltip: { show: false}},
+                    
+                    {source: '人物纹', target: '虎噬人纹', value: 5, tooltip: { show: false}},
+                    {source: '人物纹', target: '狩猎纹', value: 4, tooltip: { show: false}},
+                    {source: '人物纹', target: '人面纹', value: 3, tooltip: { show: false}},
+                    {source: '人物纹', target: '蟠螭纹', value: 2, tooltip: { show: false}},
+                ],
+                lineStyle: { color: 'gradient', curveness: 0.3 },
+                label: { color: '#333', fontSize: 12, position: 'right' }
+            }],
+            visualMap: {
+                type: 'piecewise',
+                categories: ['商代早期', '商代晚期', '西周早期', '西周晚期', '其他时期'],
+                dimension: 0,
+                inRange: { color: ['#c23531', '#2f4554', '#61a0a8', '#d48265', '#91c7ae'] },
+                top: 20,
+                right: 20
+            }
+        };
+
+        myChart.setOption(option);
+    </script>
+    <div class="draggable-icon" id="dragIcon"></div>
+    <script>
+        // 拖动功能实现
+        const draggableIcon = document.getElementById('dragIcon');
+        let isDragging = false;
+        let currentX = 0;
+        let currentY = 0;
+        let initialX = 0;
+        let initialY = 0;
+        let xOffset = 0;
+        let yOffset = 0;
+    
+        draggableIcon.addEventListener('mousedown', dragStart);
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', dragEnd);
+    
+        function dragStart(e) {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+            
+            if (e.target === draggableIcon) {
+                isDragging = true;
+            }
+        }
+    
+        function drag(e) {
+            if (isDragging) {
+                e.preventDefault();
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+                
+                xOffset = currentX;
+                yOffset = currentY;
+                
+                setTranslate(currentX, currentY, draggableIcon);
+            }
+        }
+    
+        function setTranslate(xPos, yPos, el) {
+            el.style.left = xPos + "px";
+            el.style.top = yPos + "px";
+        }
+    
+        function dragEnd(e) {
+            initialX = currentX;
+            initialY = currentY;
+            isDragging = false;
+        }
+        // 点击事件监听
+        draggableIcon.addEventListener('click', function(e) {
+            if (!isDragging) {
+                window.location.href = '3index.html';
+            }
+        });
+    
+        // dragEnd函数
+        function dragEnd(e) {
+            initialX = currentX;
+            initialY = currentY;
+            isDragging = false; 
+        }
+    
+        // 初始化位置
+        draggableIcon.style.left = '20px';
+        draggableIcon.style.top = '20px';
+    </script>
+    
+</body>
+</html>
