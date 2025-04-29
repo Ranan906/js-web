@@ -2,158 +2,357 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>铜影流年</title>
-    <style>
-        @font-face {
-        font-family: 'big'; /* 这个名字可以自己起 */
-        src: url('fonts/汉仪魏碑繁.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-        }
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>铜影流年</title>
+  <!-- 自定义字体 -->
+  <style>
+    @font-face {
+      font-family: 'big';
+      src: url('fonts/汉仪魏碑繁.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
 
-        @font-face {
-        font-family: 'small'; /* 这个名字可以自己起 */
-        src: url('fonts/汉仪新蒂苏孝慈碑.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-        }
+    @font-face {
+      font-family: 'small';
+      src: url('fonts/汉仪新蒂苏孝慈碑.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
 
-        @font-face {
-        font-family: 'big2'; /* 这个名字可以自己起 */
-        src: url('fonts/hanyiwenrunsongyun.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-        }
+    @font-face {
+      font-family: 'big2';
+      src: url('fonts/hanyiwenrunsongyun.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
 
-        * {
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-        }
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
 
-        body {
-            background: url('photo/index/1bg.png') no-repeat center center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: rgb(243, 230, 241);
-            min-height: 100vh;
+    body {
+      background: url('photo/index/1bg.png') no-repeat center center;
+      background-color: rgb(243, 230, 241);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
 
-        }
+    .hero-section {
+      background: url('photo/index/hero.jpg') no-repeat center center;
+      background-size: cover;
+      height: 15vh;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: rgb(234, 204, 153);
+      font-weight: bold;
+      font: 300 80px 'big2', sans-serif;
+      letter-spacing: 10px;
+    }
 
-        .hero-section {
-            background: url('photo/index/hero.jpg') no-repeat center center;
-            background-size: cover;
-            height: 15vh;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: rgb(234, 204, 153);
-            font-weight: bold;
-            font: 300 80px 'big2', sans-serif; /* 加上这个 */
-            letter-spacing: 10px;   /* 字与字之间增加2像素的间距 */
-        }
+    .shell {
+      width: 90%;
+      height: 600px;
+      display: flex;
+      justify-content: space-around;
+      margin-top: 30px;
+    }
 
+    .box {
+      flex: 1;
+      overflow: hidden;
+      transition: 0.5s;
+      margin: 0 10px;
+      box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
+      border-radius: 20px;
+      border: 1px solid rgb(234, 204, 153);
+      background-color: rgb(234, 204, 153);
+      position: relative;
+    }
 
-        .shell {
-            width: 90%;
-            height: 600px;
-            display: flex;
-            justify-content: space-around;
-            margin-top: 30px;
-        }
+    .box > img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: 0.5s;
+    }
 
-        .box {
-            flex: 1;
-            overflow: hidden;
-            transition: 0.5s;
-            margin: 0 10px;
-            box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
-            border-radius: 20px;
-            border: 1px solid rgb(234, 204, 153);
-            background-color: rgb(234, 204, 153);
-            position: relative;
-        }
+    .box > span {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 15%;
+      background: rgba(0, 0, 0, 0.4);
+      color: rgb(234, 204, 153);
+      font: 100 45px 'small', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-        .box > img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: 0.5s;
-        }
+    .box:hover {
+      flex-basis: 8%;
+    }
 
-        .box > span {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 15%;
-            background: rgba(0, 0, 0, 0.4);
-            color: rgb(234, 204, 153);
-            font: 100 45px 'small', sans-serif; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    .box:hover > img {
+      transform: scale(1.05);
+    }
 
-        .box:hover {
-            flex-basis: 8%;
-        }
+    /* —— 新增：数据大屏样式 —— */
+    #dashboard {
+      position: relative;
+      width: 90%;
+      height: 600px;
+      background: rgba(0, 0, 0, 0.6);
+      margin: 40px 0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
 
-        .box:hover > img {
-            transform: scale(1.05);
-        }
-    </style>
+    .chart {
+      position: absolute;
+      background: transparent;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <!-- Hero Section -->
-    <div class="hero-section">
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500&display=swap" rel="stylesheet">
-        铜影流年
-    </div>
+  <!-- Hero Section -->
+  <div class="hero-section">
+    铜影流年
+  </div>
 
-    <div class="shell">
-        <div class="box">
-            <a href="detail/1.html" target="content-frame">
-                <img src="photo\index\1.png">
-            </a>
-            <span>文物展示</span>
-        </div>
-            
-        
-        <div class="box">
-            <a href="detail/2/2index.html" target="content-frame">
-                <img src="photo\index\2.png">
-            </a>
-            <span>历史时期</span>
-        </div>
-            
-        <div class="box">
-            <a href="detail/3chart/3index.html" target="content-frame">
-                <img src="photo\index\3.png">
-            </a>
-            <span>纹样介绍</span>
-        </div>
-            
-        <div class="box">
-            <a href="detail/4/4.html" target="content-frame">
-                <img src="photo\index\4.png">
-            </a>
-            <span>合金配比</span>
-        </div>
-        <div class="box">
-            <a href="detail/5us.html" target="content-frame">
-                <img src="photo\index\5.png">
-            </a>
-            <span>关于我们</span>
-        </div>
+  <!-- 图标导航 -->
+  <div class="shell">
+    <div class="box">
+        <a href="detail/3chart/3index.html" target="content-frame">
+          <img src="photo/index/1.png" alt="">
+        </a>
+        <span>纹样介绍</span>
     </div>
+    <div class="box">
+        <a href="detail/4/4.html" target="content-frame">
+          <img src="photo/index/2.png" alt="">
+        </a>
+        <span>合金配比</span>
+    </div>
+    <div class="box">
+      <a href="detail/1.html" target="content-frame">
+        <img src="photo/index/3.png" alt="">
+      </a>
+      <span>文物展示</span>
+    </div>
+    <div class="box">
+      <a href="detail/2/2index.html" target="content-frame">
+        <img src="photo/index/4.png" alt="">
+      </a>
+      <span>历史时期</span>
+    </div>
+    <div class="box">
+      <a href="detail/5us.html" target="content-frame">
+        <img src="photo/index/5.png" alt="">
+      </a>
+      <span>关于我们</span>
+    </div>
+  </div>
+
+  <!-- —— 可视化大屏容器 —— -->
+<div id="dashboard" style="position: relative; width:100%; height:620px; background: rgba(0,0,0,0.6); border-radius:10px; overflow:hidden; margin:40px 0;">
+    <div id="sunburst"  class="chart" style="left:5%;   top:8%;   width:30%; height:38%;"></div>
+    <div id="rosePie"   class="chart" style="left:36%;  top:8%;   width:30%; height:38%;"></div>
+    <div id="radar"     class="chart" style="left:67%;  top:8%;   width:28%; height:38%;"></div>
+    <div id="barChart"  class="chart" style="left:5%;   top:53%;  width:45%; height:42%;"></div>
+    <div id="lineChart" class="chart" style="left:50%;  top:53%;  width:45%; height:42%;"></div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  <script>
+    const charts = {
+      sunburst:  echarts.init(document.getElementById('sunburst')),
+      rosePie:   echarts.init(document.getElementById('rosePie')),
+      radar:     echarts.init(document.getElementById('radar')),
+      barChart:  echarts.init(document.getElementById('barChart')),
+      lineChart: echarts.init(document.getElementById('lineChart')),
+    };
+  
+    // 1. 旭日图：功能层级
+    charts.sunburst.setOption({
+      color: ['rgb(83, 40, 12)'],  
+      title: {
+        text: '青铜器功能层级',
+        left: 'center',
+        top: '0.1%',
+        textStyle: { color: '#fff', fontSize: 16 },
+        padding: [10, 0, 0, 0]
+      },
+      tooltip: { trigger: 'item', padding: 8 },
+      series: {
+        type: 'sunburst',
+        radius: [0, '85%'],
+        center: ['50%', '55%'],
+        label: { color: '#fff', fontSize: 12, rotate: 'radial' },
+        breadcrumb: { show: true, bottom: 0, itemStyle: { color: '#fff' } },
+        data: [
+          {
+            name: '青铜器', value: 100,
+            children: [
+              { name: '祭器', value: 55 },
+              { name: '食水乐器', value: 15 },
+              { name: '兵器', value: 15 },
+              { name: '其他', value: 15 }
+            ]
+          }
+        ]
+      }
+    });
+  
+    // 2. 玫瑰图：纹样流行度
+    charts.rosePie.setOption({
+      title: {
+        text: '纹样流行度（玫瑰图）',
+        left: 'center',
+        top: '2%',
+        textStyle: { color: '#fff', fontSize: 16 },
+        padding: [10, 0, 0, 0]
+      },
+      tooltip: { trigger: 'item', padding: 8 },
+      legend: {
+        orient: 'vertical',    // 垂直排列&#8203;:contentReference[oaicite:0]{index=0}
+        right: '2%',           // 距离容器右侧 2% 
+        top: 'center',         // 垂直居中
+        textStyle: { color: '#fff' },
+        itemGap: 12            // 图例项之间的间距
+    },
+    series: [{
+        type: 'pie',
+        roseType: 'radius',
+        radius: [30, 90],
+        center: ['40%', '55%'],
+        data: [
+          { value: 70, name: '饕餮纹' },
+          { value: 50, name: '云雷纹' },
+          { value: 40, name: '兽面纹' },
+          { value: 30, name: '夔龙纹' },
+          { value: 25, name: '蟠螭纹' },
+          { value: 20, name: '蝉纹' }
+        ],
+        animationType: 'scale',
+        animationEasing: 'elasticOut',
+        animationDelay: idx => idx * 100
+      }]
+    });
+  
+    // 3. 雷达图：合金成分对比
+    charts.radar.setOption({
+      title: {
+        text: '合金成分对比',
+        left: 'center',
+        top: '0.1%',
+        textStyle: { color: '#fff', fontSize: 16 },
+        padding: [10, 0, 0, 0]
+      },
+      tooltip: { trigger: 'item', padding: 8 },
+      legend: { bottom: 5, textStyle: { color: '#fff' }, itemGap: 20 },
+      radar: {
+        indicator: [
+          { name: '铜(Cu)', max: 100 },
+          { name: '锡(Sn)', max: 100 },
+          { name: '铅(Pb)', max: 100 }
+        ],
+        radius: '65%',
+        center: ['50%', '60%'],
+        axisName: { color: '#fff', fontSize: 12, padding: [3,5] },
+        splitLine: { lineStyle: { color: 'rgba(255,255,255,0.3)' } }
+      },
+      series: [{
+        type: 'radar',
+        symbol: 'circle',
+        symbolSize: 6,
+        areaStyle: { opacity: 0.2 },
+        data: [
+          { value: [67,17,16], name: '商早期' },
+          { value: [79,14,7 ], name: '商晚期' },
+          { value: [84,11,5 ], name: '西周' }
+        ]
+      }]
+    });
+  
+    // 4. 柱状图：主要遗址出土量
+    charts.barChart.setOption({
+      title: {
+        text: '主要遗址出土量',
+        left: 'center',
+        top: '0.1%',
+        textStyle: { color: '#fff', fontSize: 16 },
+        padding: [10, 0, 0, 0]
+      },
+      tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, padding: 8 },
+      grid: { top: '15%', left: '10%', right: '10%', bottom: '15%' },
+      xAxis: {
+        type: 'category',
+        data: ['三星堆','殷墟','二里头','良渚'],
+        axisLabel: { color: '#fff', rotate: 30, margin: 10 }
+      },
+      yAxis: { type: 'value', axisLabel: { color: '#fff', margin: 10 } },
+      series: [{
+        type: 'bar',
+        data: [1238,4000,200,150],
+        barWidth: '40%',
+        itemStyle: { borderRadius: [4,4,0,0] }
+      }]
+    });
+  
+    // 5. 折线图：时代产量趋势
+    charts.lineChart.setOption({
+      title: {
+        text: '时代产量趋势',
+        left: 'center',
+        top: '0.1%',
+        textStyle: { color: '#fff', fontSize: 16 },
+        padding: [10, 0, 0, 0]
+      },
+      tooltip: { trigger: 'axis', padding: 8 },
+      dataZoom: [{
+        type: 'slider',
+        start: 0,
+        end: 100,
+        bottom: 10,
+        height: 8,
+        fillerColor: 'rgba(255,255,255,0.2)',
+        handleIcon: 'M8.2,13.9L2,8l6.2-5.9',
+        handleSize: '100%'
+      }],
+      grid: { top: '15%', left: '10%', right: '10%', bottom: '20%' },
+      xAxis: {
+        type: 'category',
+        data: ['商早期','商晚期','西周','东周'],
+        axisLabel: { color: '#fff', margin: 10 }
+      },
+      yAxis: { type: 'value', axisLabel: { color: '#fff', margin: 10 } },
+      series: [{
+        type: 'line',
+        data: [500,2500,1500,800],
+        smooth: true,
+        areaStyle: { opacity: 0.3 },
+        label: { show: true, formatter: '{c} 件', color: '#fff', position: 'top', distance: 6 }
+      }]
+    });
+  
+    // 全局自适应
+    window.addEventListener('resize', () => {
+      Object.values(charts).forEach(c => c.resize());
+    });
+  </script>
 </body>
-
 </html>

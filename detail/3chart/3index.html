@@ -16,7 +16,7 @@
             background-color: #8c564b;
             color: white;
             text-align: center;
-            padding: 20px;
+            padding: 15px;
         }
         header h1 {
             font-size: 2.5em;
@@ -53,8 +53,11 @@
             margin: 40px 20px;
         }
         .card {
+            display: flex;               /* 将卡片设为 Flex 容器 */
+            flex-direction: column;      /* 垂直排列子元素 */
             background-color: #fff;
             width:200px;
+            height: 500px;
             margin: 15px;
             border-radius: 5px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -67,7 +70,7 @@
         }
         .card img {
             width: 100%;
-            height: 300px;
+            height: 240px;
             object-fit: cover;
         }
         .card h3 {
@@ -76,18 +79,19 @@
             margin: 10px 0;
         }
         .card p {
+            flex: 1; 
             font-size: 1em;
             padding: 0 20px 20px;
             color: #5f4b3d;
         }
         .card a {
+            margin-top: auto;
             display: inline-block;
             padding: 10px 20px;
             background-color: #6b5843;
             color: white;
             text-decoration: none;
             border-radius: 5px;
-            margin-bottom: 10px;
             font-size: 1.1em;
         }
         .card a:hover {

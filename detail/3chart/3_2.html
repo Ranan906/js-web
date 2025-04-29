@@ -274,16 +274,12 @@ const option = {
         left: 'center'
     },
     tooltip: {
-        trigger: 'axis',
+        trigger: 'item',
         formatter: function(params) {
-            const p = params[0];  // 获取当前悬停的数据点
-            const motif = motifsData.find(m => m.name === p.seriesName);  // 根据 seriesName 获取纹饰信息
-            const period = p.axisValue;  // 获取当前的时期
-
-            return `
-                <strong>${motif.name} (${period})</strong><br>
-                使用比例：${p.value}%<br>
-            `;
+          return `
+            <strong>${params.seriesName} (${params.name})</strong><br/>
+            使用比例：${params.value}%<br/>
+        `;
         }
     },
     legend: {
