@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>西周早期</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5"></script>
     <style>
         body {
             background: url('../../photo/2photo/2_period.jpg') repeat center center;
@@ -79,12 +80,32 @@
         .container .btn-back:hover {
             background-color: #CD853F;
         }
+
+        .flow-chart {
+            display: flex;
+            justify-content: left;
+            gap: 8px;
+            margin: 25px;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .flow-chart div {
+            flex: none;
+            padding: 0 5px;
+        }
+
+        .chart-box {
+            width: 100%;
+            height: 400px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
     <!-- 导航栏 -->
     <div class="navbar">
-        <a href="index.html">首页</a>
+        <a href="2index.html">首页</a>
         <a href="period1.html">商代早期</a>
         <a href="period2.html">商代晚期</a>
         <a href="period3.html">西周早期</a>
@@ -94,22 +115,83 @@
     <!-- 页面内容 -->
     <div class="container">
         <h1>西周早期青铜器冶炼工艺</h1>
-        <h2>工艺流程</h2>
-        <p>
-            原料采集与合金配比：西周早期延续并优化了商代的铜锡铅合金配比，合金成分更加稳定，常见比例为铜：锡：铅 = 70:20:10。原料的采集和分配由周王室统一管理，确保青铜器的质量和礼制的一致性。
-        </p>
-        <p>制模与范铸技术：采用“分模双范浇铸”技术，即将器物分为多个部分分别制作模具，然后组合成整体进行浇铸。这种方法提高了铸造的精度和复杂度，适用于大型或复杂纹饰的器物。</p>
-        <p>纹饰与铭文制作：在模具表面雕刻纹饰和铭文，常见纹饰有饕餮纹、云雷纹等，铭文内容多为祭祀、赏赐等礼仪活动的记录。</p>
-        <p>熔炼与浇铸：将合金加热至熔融状态，倒入预先准备好的模具中，冷却后取出铸成的青铜器。</p>
-        <p>打磨与装饰：对铸成的青铜器进行打磨、抛光，必要时进行镶嵌或涂饰，以增强美观和耐用性。</p>
-        <h2>代表作品</h2>
-        <p>毛公鼎：​西周早期的重要青铜器，铭文记载了周王对毛公的赏赐和命令，是研究西周政治制度的重要资料。​</p>
-        <p>大盂鼎：​铭文详细记载了周王对盂的赏赐和命令，反映了西周初期的政治和礼仪制度。​</p>
-        <p>利簋：​铭文记载了利受命于周王的情况，是研究西周初期政治制度的重要资料。​</p>
-        <h2>文化意义</h2>
-        <p>西周早期的青铜器不仅是礼仪的重要载体，也是政治权力和社会等级的象征。​通过统一的冶炼工艺和严格的礼制规范，青铜器在维护社会秩序、传承文化传统方面发挥了重要作用。​铭文的广泛使用，使青铜器成为记录历史、传播文化的重要工具。</p>
-        <a href="2index.html" class="btn-back">返回首页</a>
 
+        <h2>工艺流程</h2>
+        <p>原料采集与合金配比：西周早期延续并优化了商代的铜锡铅合金配比，合金成分更加稳定，常见比例为铜：锡：铅 = 70:20:10。</p>
+        <p>制模与范铸技术：采用“分模双范浇铸”技术，将器物分块制模后组合，适用于复杂结构铸件。</p>
+        <p>纹饰与铭文制作：在模具上雕刻饕餮纹、云雷纹等装饰，并刻录赏赐、祭祀等铭文。</p>
+        <p>熔炼与浇铸：加热合金至熔点后注入模具冷却成型。</p>
+        <p>打磨与装饰：完成铸造后进行打磨、抛光，有时辅以镶嵌或涂饰提升视觉效果。</p>
+
+        <!-- 工艺流程图 -->
+        <div class="flow-chart">
+            <div><strong>合金配比</strong> ➜</div>
+            <div><strong>模具分铸</strong> ➜</div>
+            <div><strong>雕饰铭文</strong> ➜</div>
+            <div><strong>浇铸冷却</strong> ➜</div>
+            <div><strong>整饰成器</strong></div>
+        </div>
+
+        <!-- 合金比例图 -->
+        <h2>合金成分比例图</h2>
+        <div id="metalChart" class="chart-box"></div>
+        <p>西周早期青铜器合金以铜为主，辅以锡和铅，使器物既坚硬又具延展性，满足复杂工艺需求。</p>
+
+        <!-- 用途图表 -->
+        <h2>青铜器用途占比</h2>
+        <div id="usageChart" class="chart-box"></div>
+
+        <h2>代表作品</h2>
+        <p>毛公鼎：铭文详述赏赐与命令，是西周政治制度研究的重要文献。</p>
+        <p>大盂鼎：文字内容丰富，体现周初礼制权力结构。</p>
+        <p>利簋：记录周王命令利受命情况，具史料价值。</p>
+
+        <h2>文化意义</h2>
+        <p>西周早期青铜器不仅承载礼制功能，也是周王朝权威的象征。铭文广泛应用，使其成为记录历史、维护秩序的重要媒介，体现出政治、文化与工艺的高度融合。</p>
+
+        <a href="2index.html" class="btn-back">返回首页</a>
     </div>
+
+    <!-- 图表脚本 -->
+    <script>
+        var metalChart = echarts.init(document.getElementById('metalChart'));
+        metalChart.setOption({
+            title: { text: '铜锡铅合金比例', left: 'center' },
+            tooltip: { trigger: 'item' },
+            legend: { bottom: '10%', left: 'center' },
+            series: [{
+                name: '成分',
+                type: 'pie',
+                radius: '50%',
+                data: [
+                    { value: 70, name: '铜' },
+                    { value: 20, name: '锡' },
+                    { value: 10, name: '铅' }
+                ],
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }]
+        });
+
+        var usageChart = echarts.init(document.getElementById('usageChart'));
+        usageChart.setOption({
+            title: { text: '西周早期青铜器用途分布', left: 'center' },
+            tooltip: {},
+            xAxis: { type: 'category', data: ['礼器', '祭器', '工具', '兵器'] },
+            yAxis: { type: 'value' },
+            series: [{
+                data: [45, 35, 10, 10],
+                type: 'bar',
+                itemStyle: {
+                    color: '#A0522D'
+                }
+            }]
+        });
+    </script>
 </body>
 </html>

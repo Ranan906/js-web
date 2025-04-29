@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>商代晚期</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5"></script>
     <style>
         body {
             background: url('../../photo/2photo/2_period.jpg') repeat center center;
@@ -79,12 +80,32 @@
         .container .btn-back:hover {
             background-color: #CD853F;
         }
+
+        .flow-chart {
+            display: flex;
+            justify-content: left;
+            gap: 8px;
+            margin: 25px;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .flow-chart div {
+            flex: none;
+            padding: 0 5px;
+        }
+
+        .chart-box {
+            width: 100%;
+            height: 400px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
     <!-- 导航栏 -->
     <div class="navbar">
-        <a href="index.html">首页</a>
+        <a href="2index.html">首页</a>
         <a href="period1.html">商代早期</a>
         <a href="period2.html">商代晚期</a>
         <a href="period3.html">西周早期</a>
@@ -94,19 +115,82 @@
     <!-- 页面内容 -->
     <div class="container">
         <h1>商代晚期青铜器冶炼工艺</h1>
-        <h2>工艺流程</h2>
-        <p>冶炼铜矿石：​选取含铜矿石，如辉铜矿、黄铜矿等，使用木炭作为还原剂，在高温下将铜矿石熔炼，得到粗铜。​</p>
-        <p>熔炼与合金化：​将粗铜与锡矿石混合，熔炼得到青铜合金。根据需要调整铜与锡的比例，通常为铜：锡 = 8:2。​</p>
-        <p>制模与铸造：​采用陶范法，即在泥模上制范。具体步骤包括雕塑待铸造的泥模、烘培泥模变硬、在泥模上分块制作外范、在外范上补课纹饰、形成空腔、制作铭文泥模、合范、阴干陶范后加热到600摄氏度-900摄氏度、浇注青铜液，冷却后清除外范和泥芯，精整并抛光。​</p>
-        <p>冷却与脱范：将浇筑后的青铜器却至常温，拆除外范和泥芯，进行修整和抛光。</p>
-        <p>铭文与装饰：​在器物表面进行铭文刻写和装饰，体现器物的用途和身份象征。​</p>
-        <h2>代表作品</h2>
-        <p>司母戊鼎：一件大型青铜鼎，铭文记载了商代晚期的历史事件。</p>
-        <p>四羊方尊：形状独特的青铜器，体现了商代晚期的铸造工艺和艺术风格。</p>
-        <h2>文化意义</h2>
-        <p>商代晚期的青铜器多采用范铸法，器物表面常饰有兽面纹、雷纹等复杂纹饰，体现了高超的铸造技术和艺术水平。商代晚期的青铜器冶炼工艺标志着青铜器制作技术的成熟和高峰，器物的精美程度和铭文的丰富内容反映了当时社会的政治、宗教和文化生活。</p>
-        <a href="2index.html" class="btn-back">返回首页</a>
 
+        <h2>工艺流程</h2>
+        <p>冶炼铜矿石：​选取辉铜矿、黄铜矿等含铜矿石，使用木炭高温还原出粗铜。</p>
+        <p>熔炼与合金化：​粗铜与锡矿混合熔炼，形成铜锡合金。比例多为铜8：锡2。</p>
+        <p>制模与铸造：​采用范铸法，包括雕模、制范、烘干、合范、加热与浇注。</p>
+        <p>冷却与脱范：器物冷却后，拆除外范和泥芯，进行整修和抛光。</p>
+        <p>铭文与装饰：在器物表面雕刻铭文与复杂纹饰，彰显用途与身份。</p>
+
+        <!-- 工艺流程图示 -->
+        <div class="flow-chart">
+            <div><strong>冶炼矿石</strong> ➜</div>
+            <div><strong>合金熔炼</strong> ➜</div>
+            <div><strong>模具制备</strong> ➜</div>
+            <div><strong>浇铸冷却</strong> ➜</div>
+            <div><strong>抛光装饰</strong></div>
+        </div>
+
+        <!-- 成分比例图 -->
+        <h2>合金成分比例图</h2>
+        <div id="metalChart" class="chart-box"></div>
+
+        <p>商代晚期青铜合金中铜锡比例更加稳定，体现出合金技术的成熟。</p>
+
+        <!-- 用途图表 -->
+        <h2>青铜器用途占比</h2>
+        <div id="usageChart" class="chart-box"></div>
+
+        <h2>代表作品</h2>
+        <p>司母戊鼎：体积宏大、工艺复杂，铭文记载商王朝重要事件。</p>
+        <p>四羊方尊：造型奇特，融合艺术与实用，是青铜艺术巅峰之作。</p>
+
+        <h2>文化意义</h2>
+        <p>商代晚期青铜器呈现规模化和制度化特征，制作更为精美，装饰更为繁复，技术水平达到空前高度，充分体现了礼制与宗教在社会中的核心地位。</p>
+
+        <a href="2index.html" class="btn-back">返回首页</a>
     </div>
+
+    <!-- 图表脚本 -->
+    <script>
+        var metalChart = echarts.init(document.getElementById('metalChart'));
+        metalChart.setOption({
+            title: { text: '铜锡合金比例（估计）', left: 'center' },
+            tooltip: { trigger: 'item' },
+            legend: { bottom: '10%', left: 'center' },
+            series: [{
+                name: '成分',
+                type: 'pie',
+                radius: '50%',
+                data: [
+                    { value: 80, name: '铜' },
+                    { value: 20, name: '锡' }
+                ],
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }]
+        });
+
+        var usageChart = echarts.init(document.getElementById('usageChart'));
+        usageChart.setOption({
+            title: { text: '商代晚期青铜器用途分布', left: 'center' },
+            tooltip: {},
+            xAxis: { type: 'category', data: ['礼器', '祭器', '实用器'] },
+            yAxis: { type: 'value' },
+            series: [{
+                data: [50, 35, 15],
+                type: 'bar',
+                itemStyle: {
+                    color: '#CD853F'
+                }
+            }]
+        });
+    </script>
 </body>
 </html>
